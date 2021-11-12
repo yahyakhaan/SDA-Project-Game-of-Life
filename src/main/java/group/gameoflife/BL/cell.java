@@ -1,4 +1,4 @@
-package BL;
+package group.gameoflife.BL;
 
 public class cell {
 

@@ -1,4 +1,4 @@
-package BL;
+package group.gameoflife.BL;
 
 public interface DBinterface{
     public void saveGame();

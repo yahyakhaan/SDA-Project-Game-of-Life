@@ -1,4 +1,4 @@
-package BL;
+package group.gameoflife.BL;
 
 public interface UIinterface{
     
@@ -8,7 +8,7 @@ public interface UIinterface{
 
     public void nextState();
     public void getGridSize(int[] gridSize);
-    public cell[] getGrid();
+    public cell[][] getGrid();
     public void clearGrid();
 
     public void setGridZoom();
@@ -21,6 +21,6 @@ public interface UIinterface{
     public void stopGame();
 
     public void saveGame();
-    public cell[] loadGame(int id);
+    public cell[][] loadGame(int id);
     public void deleteState(int id);
 }
