@@ -9,7 +9,7 @@ public class grid {
     int[] m_size;
     cell[][] m_grid;
 
-    grid(int x,int y)
+    public grid(int x,int y)
     {
         m_size=new int[2];
         m_size[0]=x;
@@ -23,7 +23,7 @@ public class grid {
         m_start=false;
     }
 
-    grid(int x,int y,int speed , int zoom,int number_states)
+    public grid(int x,int y,int speed , int zoom,int number_states)
     {
         m_size=new int[2];
         m_size[0]=x;
