@@ -15,7 +15,15 @@ public class grid {
         m_size[0]=x;
         m_size[1]=y;
 
+
         m_grid =new cell[m_size[0]][m_size[1]];
+        for(int i=0;i<x;i++)
+        {
+            for(int j=0;j<y;j++)
+            {
+                m_grid[i][j]=new cell();
+            }
+        }
 
         m_zoom_level=0;
         m_speed_level=0;
@@ -30,6 +38,13 @@ public class grid {
         m_size[1]=y;
 
         m_grid =new cell[m_size[0]][m_size[1]];
+        for(int i=0;i<x;i++)
+        {
+            for(int j=0;j<y;j++)
+            {
+                m_grid[i][j]=new cell();
+            }
+        }
 
         m_zoom_level =zoom;
         m_speed_level =speed;
@@ -47,8 +62,7 @@ public class grid {
 
     public void makeCellDead(int x,int y)
     {
-        if(x<m_size[0] && y<m_size[1])
-        {
+        if (x < m_size[0] && y < m_size[1]) {
             m_grid[x][y].makeDead();
         }
     }
@@ -75,102 +89,104 @@ public class grid {
                 int nei_x=0;
                 int nei_y=0;
 
-                nei_x=i--;
-                nei_y=j--;
-                if(!(nei_x<0)&&!(nei_y<0))
+                nei_x=i-1;
+                nei_y=j-1;
+                if(nei_x>=0&&nei_y>=0)
                 {
-                    if(m_grid[nei_x][nei_y].isAlive())
+                    if(m_grid[nei_x][nei_y].isAlive()||m_grid[nei_x][nei_y].isHalfDead())
                     {
                         no_of_neighbours_alive++;
                     }
                 }
 
-                nei_x=i++;
-                nei_y=j--;
-                if(!(nei_x>m_size[0])&&!(nei_y<0))
+                nei_x=i+1;
+                nei_y=j-1;
+                if(nei_x<m_size[0]&&nei_y>=0)
                 {
-                    if(m_grid[nei_x][nei_y].isAlive())
+                    if(m_grid[nei_x][nei_y].isAlive()||m_grid[nei_x][nei_y].isHalfDead())
                     {
                         no_of_neighbours_alive++;
                     }
                 }
 
-                nei_x=i--;
-                nei_y=j++;
-                if(!(nei_x<0)&&!(nei_y>m_size[1]))
+                nei_x=i-1;
+                nei_y=j+1;
+                if(nei_x>=0&&nei_y<m_size[1])
                 {
-                    if(m_grid[nei_x][nei_y].isAlive())
+                    if(m_grid[nei_x][nei_y].isAlive()||m_grid[nei_x][nei_y].isHalfDead())
                     {
                         no_of_neighbours_alive++;
                     }
                 }
 
-                nei_x=i++;
-                nei_y=j++;
-                if(!(nei_x>m_size[0])&&!(nei_y>m_size[1]))
+                nei_x=i+1;
+                nei_y=j+1;
+                if(nei_x<m_size[0]&&nei_y<m_size[1])
                 {
-                    if(m_grid[nei_x][nei_y].isAlive())
+                    if(m_grid[nei_x][nei_y].isAlive()||m_grid[nei_x][nei_y].isHalfDead())
                     {
                         no_of_neighbours_alive++;
                     }
                 }
 
-                nei_x=i--;
+                nei_x=i-1;
                 nei_y=j;
-                if(!(nei_x<0))
+                if(nei_x>=0)
                 {
-                    if(m_grid[nei_x][nei_y].isAlive())
+                    if(m_grid[nei_x][nei_y].isAlive()||m_grid[nei_x][nei_y].isHalfDead())
                     {
                         no_of_neighbours_alive++;
                     }
                 }
 
-                nei_x=i++;
+                nei_x=i+1;
                 nei_y=j;
-                if(!(nei_x>m_size[0]))
+                if(nei_x<m_size[0])
                 {
-                    if(m_grid[nei_x][nei_y].isAlive())
+                    if(m_grid[nei_x][nei_y].isAlive()||m_grid[nei_x][nei_y].isHalfDead())
                     {
                         no_of_neighbours_alive++;
                     }
                 }
 
                 nei_x=i;
-                nei_y=j--;
-                if(!(nei_y<0))
+                nei_y=j-1;
+                if(nei_y>=0)
                 {
-                    if(m_grid[nei_x][nei_y].isAlive())
+                    if(m_grid[nei_x][nei_y].isAlive()||m_grid[nei_x][nei_y].isHalfDead())
                     {
                         no_of_neighbours_alive++;
                     }
                 }
 
                 nei_x=i;
-                nei_y=j++;
-                if(!(nei_y>m_size[1]))
+                nei_y=j+1;
+                if(nei_y<m_size[1])
                 {
-                    if(m_grid[nei_x][nei_y].isAlive())
+                    if(m_grid[nei_x][nei_y].isAlive()||m_grid[nei_x][nei_y].isHalfDead())
                     {
                         no_of_neighbours_alive++;
                     }
                 }
 
-                if(m_grid[i][j].isAlive())
+                if(m_grid[i][j].isAlive()||m_grid[i][j].isHalfAlive())
                 {
-                    if(no_of_neighbours_alive<=1&&no_of_neighbours_alive>=4)
+                    if(no_of_neighbours_alive<=1||no_of_neighbours_alive>=4)
                     {
-                        m_grid[i][j].makeDead();
+                        m_grid[i][j].makeHalfDead();
                     }
                 }
-                else
+                else if(m_grid[i][j].isHalfDead()||m_grid[i][j].isDead())
                 {
                     if(no_of_neighbours_alive==3)
                     {
-                        m_grid[i][j].makeAlive();
+                        m_grid[i][j].makeHalfAlive();
                     }
                 }
             }
         }
+        this.makeGridFullyAlive();
+        this.makeGridFullyDead();
         m_number_of_states++;
     }
 
@@ -244,5 +260,41 @@ public class grid {
     public void deleteGame(int id)
     {
 
+    }
+
+    private void makeCellHalfAlive(int x,int y)
+    {
+        if(x<m_size[0] && y<m_size[1])
+        {
+            m_grid[x][y].makeHalfAlive();
+        }
+    }
+
+    private void makeGridFullyAlive()
+    {
+        for(int i=0;i<m_size[0];i++)
+        {
+            for(int j=0;j<m_size[1];j++)
+            {
+                if(m_grid[i][j].isHalfAlive())
+                {
+                    m_grid[i][j].makeAlive();
+                }
+            }
+        }
+    }
+
+    private void makeGridFullyDead()
+    {
+        for(int i=0;i<m_size[0];i++)
+        {
+            for(int j=0;j<m_size[1];j++)
+            {
+                if(m_grid[i][j].isHalfDead())
+                {
+                    m_grid[i][j].makeDead();
+                }
+            }
+        }
     }
 }
