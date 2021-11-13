@@ -4,15 +4,15 @@ public interface UIinterface{
     
     public void makeCellALive(int x,int y);
     public void makeCellDead(int x,int y);
-    public boolean isCellAlive();
+    public boolean isCellAlive(int x, int y);
 
     public void nextState();
-    public void getGridSize(int[] gridSize);
+    public int[] getGridSize(); //Grid = int x[0] * int y[1]
     public cell[][] getGrid();
     public void clearGrid();
 
-    public void setGridZoom();
-    public void setGridSpeed();
+    public void setGridZoom(int zoom_level);
+    public void setGridSpeed(int grid_speed);
     public int  getGridZoom();
     public int  getGridSpeed();
     public int  getNoOfStates();
