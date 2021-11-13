@@ -67,7 +67,111 @@ public class grid {
 
     public void nextState()
     {
+        for(int i=0;i<m_size[0];i++)
+        {
+            for(int j=0;j<m_size[1];j++)
+            {
+                int no_of_neighbours_alive=0;
+                int nei_x=0;
+                int nei_y=0;
 
+                nei_x=i--;
+                nei_y=j--;
+                if(!(nei_x<0)&&!(nei_y<0))
+                {
+                    if(m_grid[nei_x][nei_y].isAlive())
+                    {
+                        no_of_neighbours_alive++;
+                    }
+                }
+
+                nei_x=i++;
+                nei_y=j--;
+                if(!(nei_x>m_size[0])&&!(nei_y<0))
+                {
+                    if(m_grid[nei_x][nei_y].isAlive())
+                    {
+                        no_of_neighbours_alive++;
+                    }
+                }
+
+                nei_x=i--;
+                nei_y=j++;
+                if(!(nei_x<0)&&!(nei_y>m_size[1]))
+                {
+                    if(m_grid[nei_x][nei_y].isAlive())
+                    {
+                        no_of_neighbours_alive++;
+                    }
+                }
+
+                nei_x=i++;
+                nei_y=j++;
+                if(!(nei_x>m_size[0])&&!(nei_y>m_size[1]))
+                {
+                    if(m_grid[nei_x][nei_y].isAlive())
+                    {
+                        no_of_neighbours_alive++;
+                    }
+                }
+
+                nei_x=i--;
+                nei_y=j;
+                if(!(nei_x<0))
+                {
+                    if(m_grid[nei_x][nei_y].isAlive())
+                    {
+                        no_of_neighbours_alive++;
+                    }
+                }
+
+                nei_x=i++;
+                nei_y=j;
+                if(!(nei_x>m_size[0]))
+                {
+                    if(m_grid[nei_x][nei_y].isAlive())
+                    {
+                        no_of_neighbours_alive++;
+                    }
+                }
+
+                nei_x=i;
+                nei_y=j--;
+                if(!(nei_y<0))
+                {
+                    if(m_grid[nei_x][nei_y].isAlive())
+                    {
+                        no_of_neighbours_alive++;
+                    }
+                }
+
+                nei_x=i;
+                nei_y=j++;
+                if(!(nei_y>m_size[1]))
+                {
+                    if(m_grid[nei_x][nei_y].isAlive())
+                    {
+                        no_of_neighbours_alive++;
+                    }
+                }
+
+                if(m_grid[i][j].isAlive())
+                {
+                    if(no_of_neighbours_alive<=1&&no_of_neighbours_alive>=4)
+                    {
+                        m_grid[i][j].makeDead();
+                    }
+                }
+                else
+                {
+                    if(no_of_neighbours_alive==3)
+                    {
+                        m_grid[i][j].makeAlive();
+                    }
+                }
+            }
+        }
+        m_number_of_states++;
     }
 
     public int[] getGridSize()
