@@ -6,7 +6,7 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="plane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="plane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="641.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="welcomeText" layoutX="276.0" layoutY="14.0" text="Game of Life" />
       <Label layoutX="50.0" layoutY="369.0" text="No of Stages:" />
@@ -25,5 +25,6 @@
           <AnchorPane focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="304.0" prefWidth="478.0" />
         </content>
       </ScrollPane>
+      <Button layoutX="550.0" layoutY="11.0" mnemonicParsing="false" onAction="#clearStage" text="Clear Stage" />
    </children>
 </AnchorPane>

@@ -123,6 +123,11 @@ public class MainSceneController {
         updateCells();
 
     }
+    public void clearStage(ActionEvent e)
+    {
+        GUI.clearGrid();
+        updateCells();
+    }
     public void start(ActionEvent e)
     {
         welcomeText.setText("Game Started");
