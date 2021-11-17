@@ -1,9 +1,11 @@
 package group.gameoflife.UI;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -24,8 +26,27 @@ public class MainSceneController {
     private Label welcomeText;
 
     @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("This is game of Life!");
+    private int[] returnButtonId(String s)
+    {
+        String[] ID = s.split(":");
+        int[] ID_ = new int[2];
+        ID_[0]=Integer.parseInt(ID[0]);
+        ID_[1]=Integer.parseInt(ID[1]);
+        return ID_;
+    }
+
+    private Button getButtonInGrid ( int r,  int c, GridPane gridPane) {
+        Node result = null;
+        ObservableList<Node> nodesInside = gridPane.getChildren();
+
+        for (Node node : nodesInside) {
+            if(gridPane.getRowIndex(node) == r && gridPane.getColumnIndex(node) == c) {
+                result = node;
+                break;
+            }
+        }
+
+        return (Button)result;
     }
 
     public void loadGUI(Graphical_UI GUI)
@@ -42,19 +63,20 @@ public class MainSceneController {
         gridSize = GUI.getGridSize();
         for (int r = 0; r < gridSize[0]; r++) {
             for (int c = 0; c < gridSize[1]; c++) {
-                Grid_.getChildren();
-
+                    Button b = getButtonInGrid(r,c,Grid_);
+                System.out.println("Tracked from Grid : "+b.getId());
+                int [] IDs = this.returnButtonId(b.getId());
+                Boolean check = GUI.isCellAlive(IDs[0],IDs[1]);
+                if (check == true)
+                {
+                    b.setStyle("-fx-background-color: #00FF00;");
+                }
+                else b.setStyle("-fx-background-color: #FFF;");
             }
         }
 
     }
-    public void clickOnButton(ActionEvent e)
-    {
-        int buttonID;
-        Button b = (Button)e.getSource();
-        System.out.println(b.getId()+" IS CLICKED");
 
-    }
     public void loadBlankGrid()
     {
         System.out.println(check);
@@ -81,24 +103,24 @@ public class MainSceneController {
                             Button b = (Button) actionEvent.getSource();
                             System.out.println(b.getId() + " IS CLICKED");
                             b.setStyle("-fx-background-color: #00FF00;");
+                            int [] IDs = returnButtonId(b.getId());
+                            GUI.makeCellALive(IDs[0],IDs[1]);
                         }
                         else if (button.getStyle()=="-fx-background-color: #00FF00;") {
                            //Button Deselected
                             Button b = (Button) actionEvent.getSource();
                             System.out.println(b.getId() + " IS CLICKED");
                             b.setStyle("-fx-background-color: #FFF;");
+                            int [] IDs = returnButtonId(b.getId());
+                            GUI.makeCellDead(IDs[0],IDs[1]);
                         }
                     }
                 });
                 Grid_.add(button, c, r);
             }
         }
-        //this.scrollpane.setScaleY(10);
-      //  plane.setVisible(false);
         this.scrollPane.setContent(Grid_);
-        //this.scrollPane.();
-
-
+        updateCells();
 
     }
     public void start(ActionEvent e)
@@ -107,14 +129,9 @@ public class MainSceneController {
         loadBlankGrid();
 
     }
-    public void doit(ActionEvent e)
-    {
-        welcomeText.setText("GG");
-
-    }
     public void nextStage(ActionEvent e)
     {
-
-
+        GUI.nextState();
+        this.updateCells();
     }
 }

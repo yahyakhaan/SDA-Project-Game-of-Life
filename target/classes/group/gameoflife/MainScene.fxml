@@ -6,7 +6,7 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="plane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" >
+<AnchorPane fx:id="plane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="welcomeText" layoutX="276.0" layoutY="14.0" text="Game of Life" />
       <Label layoutX="50.0" layoutY="369.0" text="No of Stages:" />
@@ -17,7 +17,7 @@
       <Slider layoutX="486.0" layoutY="372.0" prefHeight="14.0" prefWidth="71.0" />
       <Button fx:id="Start" layoutX="50.0" layoutY="10.0" mnemonicParsing="false" onAction="#start" text="Start" />
       <Button layoutX="101.0" layoutY="10.0" mnemonicParsing="false" text="Stop" />
-      <Button layoutX="149.0" layoutY="10.0" mnemonicParsing="false" text="Next Stage" />
+      <Button fx:id="nextStage" layoutX="149.0" layoutY="10.0" mnemonicParsing="false" onAction="#nextStage" text="Next Stage" />
       <Button layoutX="375.0" layoutY="11.0" mnemonicParsing="false" text="Save Game" />
       <Button layoutX="466.0" layoutY="11.0" mnemonicParsing="false" text="Load Game" />
       <ScrollPane fx:id="scrollPane" hbarPolicy="ALWAYS" hmax="5.0" hvalue="2.5" layoutX="49.0" layoutY="49.0" pannable="true" prefHeight="317.0" prefWidth="494.0" vbarPolicy="ALWAYS" vmax="5.0" vvalue="2.5">

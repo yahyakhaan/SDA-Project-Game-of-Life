@@ -18,8 +18,8 @@ import java.io.IOException;
 public class main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        int grid_xSize=5;
-        int grid_ySize=5;
+        int grid_xSize=20;
+        int grid_ySize=20;
 
 
 
@@ -30,9 +30,6 @@ public class main extends Application {
 
         MainSceneController Controller = new MainSceneController();
         fxmlLoader.setController(Controller);
-        //Controller.loadBlankGrid();
-        //ActionEvent e = new ActionEvent();
-        //Controller.doit(e);
         Controller.loadGUI(GUI);
         Scene scene = new Scene(fxmlLoader.load(), 800, 800);
         stage.setTitle("Game Of Life");
