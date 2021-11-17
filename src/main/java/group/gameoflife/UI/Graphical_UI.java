@@ -80,5 +80,4 @@ public class Graphical_UI implements UIinterface {
     public void deleteState(int id){
         game.deleteGame(id);
     }
-
 }
