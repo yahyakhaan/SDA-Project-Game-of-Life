@@ -36,7 +36,7 @@ public class main extends Application {
         stage.setTitle("Game Of Life");
         stage.setScene(scene);
         stage.show();
-        
+
     }
 
     public static void main(String[] args) {

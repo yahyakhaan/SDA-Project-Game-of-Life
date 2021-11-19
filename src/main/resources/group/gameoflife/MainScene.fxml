@@ -14,7 +14,7 @@
       <Slider layoutX="385.0" layoutY="611.0" prefHeight="14.0" prefWidth="71.0" />
       <Label layoutX="342.0" layoutY="609.0" text="Speed" />
       <Label layoutX="461.0" layoutY="610.0" text="Zoom" />
-      <Slider fx:id="zoomSlider" layoutX="502.0" layoutY="611.0" prefHeight="14.0" prefWidth="71.0" value="50.0" />
+      <Slider fx:id="zoomSlider" layoutX="502.0" layoutY="611.0" majorTickUnit="10.0" max="90.0" min="2.0" minorTickCount="5" prefHeight="14.0" prefWidth="71.0" snapToTicks="true" value="47.0" />
       <Button fx:id="Start" layoutX="50.0" layoutY="10.0" mnemonicParsing="false" onAction="#start" text="Start" />
       <Button fx:id="Stop" layoutX="101.0" layoutY="10.0" mnemonicParsing="false" onAction="#stop" text="Stop" />
       <Button fx:id="nextStage" layoutX="149.0" layoutY="10.0" mnemonicParsing="false" onAction="#nextStage" text="Next Stage" />

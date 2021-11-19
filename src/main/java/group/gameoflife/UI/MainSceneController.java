@@ -160,7 +160,7 @@ public class MainSceneController {
             welcomeText.setText("Game Started");
 
 
-            zoomSlider.setValue(50);
+            zoomSlider.setValue(47);
             zoomSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
                 public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
