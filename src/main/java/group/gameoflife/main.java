@@ -1,5 +1,6 @@
 package group.gameoflife;
 
+import java.util.concurrent.TimeUnit;
 import group.gameoflife.BL.grid;
 import group.gameoflife.UI.Graphical_UI;
 import group.gameoflife.UI.MainSceneController;
@@ -35,6 +36,7 @@ public class main extends Application {
         stage.setTitle("Game Of Life");
         stage.setScene(scene);
         stage.show();
+        
     }
 
     public static void main(String[] args) {

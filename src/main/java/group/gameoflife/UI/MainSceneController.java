@@ -17,7 +17,12 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 
 public class MainSceneController {
+    private int Grid_Hgap;
+    private int Grid_Vgap;
+    private double Grid_Xscale;
+    private double Grid_Yscale;
     private int check;
+    private boolean game_status;
     private  GridPane Grid_;
     private Graphical_UI GUI;
     @FXML
@@ -84,6 +89,8 @@ public class MainSceneController {
 
     }
 
+
+
     public void loadBlankGrid()
     {
         System.out.println(check);
@@ -93,27 +100,14 @@ public class MainSceneController {
         Grid_.setPadding(new Insets(5));
         Grid_.setHgap(5);
         Grid_.setVgap(5);
-        zoomSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
-            public void changed(ObservableValue <?extends Number> observable, Number oldValue, Number newValue)
-            {
-
-                System.out.println("Old Value: "+oldValue.intValue() + "New Value: "+ newValue.intValue()/* +"Multiple: " + multiple*/);
-                if (oldValue.intValue() - newValue.intValue()<0)
-                {
-                        zoomIn(newValue.intValue()- oldValue.intValue());
-                }
-                else if (oldValue.intValue() - newValue.intValue()>0)
-                {
-                        zoomOut(oldValue.intValue()-newValue.intValue());
-                }
-            }
-        });
 
         for (int r = 0; r < gridSize[0]; r++) {
             for (int c = 0; c < gridSize[1]; c++) {
                 System.out.println("In loop");
                 Button button = new Button(String.valueOf("  "));
+                Grid_Xscale=button.getScaleX();
+                Grid_Yscale=button.getScaleY();
                 button.setId(Integer.toString(r)+":"+Integer.toString(c));
                 button.setStyle("-fx-background-color: #FFF; -fx-border-style: solid;");
                 System.out.println(button.getId());
@@ -156,11 +150,48 @@ public class MainSceneController {
     }
     public void start(ActionEvent e)
     {
-        GUI.startGame();
-        GUI.clearGrid();
-        welcomeText.setText("Game Started");
-        loadBlankGrid();
+        Grid_Hgap=5;
+        Grid_Vgap=5;
+        if (game_status==false) {
 
+            GUI.startGame();
+            GUI.clearGrid();
+            loadBlankGrid();
+            welcomeText.setText("Game Started");
+
+
+            zoomSlider.setValue(50);
+            zoomSlider.valueProperty().addListener(new ChangeListener<Number>() {
+
+                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+
+                    System.out.println("Old Value: " + oldValue.intValue() + "New Value: " + newValue.intValue()/* +"Multiple: " + multiple*/);
+                    if (oldValue.intValue() - newValue.intValue() < 0) {
+                        zoomIn(newValue.intValue() - oldValue.intValue());
+                    } else if (oldValue.intValue() - newValue.intValue() > 0) {
+                        zoomOut(oldValue.intValue() - newValue.intValue());
+                    }
+                }
+            });
+            this.game_status = true;
+
+
+        }
+        else {
+
+            GUI.startGame();
+            GUI.clearGrid();
+            updateCells();
+            welcomeText.setText("Game Started");
+            this.game_status = true;
+
+
+        }
+    }
+    public void stop(ActionEvent e)
+    {
+        GUI.stopGame();
+        this.game_status=false;
     }
     public void nextStage(ActionEvent e)
     {
@@ -184,6 +215,11 @@ public class MainSceneController {
                 b.setScaleX(b.getScaleX()+(difference*0.01));
             }
         }
+
+    }
+    public Boolean game_status()
+    {
+        return game_status;
 
     }
     public void zoomOut(int difference)

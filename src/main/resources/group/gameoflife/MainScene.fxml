@@ -16,7 +16,7 @@
       <Label layoutX="461.0" layoutY="610.0" text="Zoom" />
       <Slider fx:id="zoomSlider" layoutX="502.0" layoutY="611.0" prefHeight="14.0" prefWidth="71.0" value="50.0" />
       <Button fx:id="Start" layoutX="50.0" layoutY="10.0" mnemonicParsing="false" onAction="#start" text="Start" />
-      <Button layoutX="101.0" layoutY="10.0" mnemonicParsing="false" text="Stop" />
+      <Button fx:id="Stop" layoutX="101.0" layoutY="10.0" mnemonicParsing="false" onAction="#stop" text="Stop" />
       <Button fx:id="nextStage" layoutX="149.0" layoutY="10.0" mnemonicParsing="false" onAction="#nextStage" text="Next Stage" />
       <Button layoutX="375.0" layoutY="11.0" mnemonicParsing="false" text="Save Game" />
       <Button layoutX="466.0" layoutY="11.0" mnemonicParsing="false" text="Load Game" />
