@@ -18,8 +18,8 @@ import java.io.IOException;
 public class main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        int grid_xSize=20;
-        int grid_ySize=20;
+        int grid_xSize=50;
+        int grid_ySize=70;
 
 
 

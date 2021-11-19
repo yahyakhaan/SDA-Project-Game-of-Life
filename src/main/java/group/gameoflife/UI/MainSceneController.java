@@ -1,5 +1,6 @@
 package group.gameoflife.UI;
-
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Slider;
 import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -24,8 +26,12 @@ public class MainSceneController {
     private AnchorPane plane;
     @FXML
     private Label welcomeText;
-
     @FXML
+    private Slider zoomSlider;
+    @FXML
+    private Label noOfStage;
+    @FXML
+
     private int[] returnButtonId(String s)
     {
         String[] ID = s.split(":");
@@ -59,6 +65,7 @@ public class MainSceneController {
     @FXML
     public void updateCells()
     {
+        noOfStage.setText(String.valueOf(GUI.getNoOfStates()));
         int gridSize[];
         gridSize = GUI.getGridSize();
         for (int r = 0; r < gridSize[0]; r++) {
@@ -69,9 +76,9 @@ public class MainSceneController {
                 Boolean check = GUI.isCellAlive(IDs[0],IDs[1]);
                 if (check == true)
                 {
-                    b.setStyle("-fx-background-color: #00FF00;");
+                    b.setStyle("-fx-background-color: #00FF00; -fx-border-style: solid;");
                 }
-                else b.setStyle("-fx-background-color: #FFF;");
+                else b.setStyle("-fx-background-color: #FFF; -fx-border-style: solid;");
             }
         }
 
@@ -86,33 +93,52 @@ public class MainSceneController {
         Grid_.setPadding(new Insets(5));
         Grid_.setHgap(5);
         Grid_.setVgap(5);
+        zoomSlider.valueProperty().addListener(new ChangeListener<Number>() {
+
+            public void changed(ObservableValue <?extends Number> observable, Number oldValue, Number newValue)
+            {
+
+                System.out.println("Old Value: "+oldValue.intValue() + "New Value: "+ newValue.intValue()/* +"Multiple: " + multiple*/);
+                if (oldValue.intValue() - newValue.intValue()<0)
+                {
+                        zoomIn(newValue.intValue()- oldValue.intValue());
+                }
+                else if (oldValue.intValue() - newValue.intValue()>0)
+                {
+                        zoomOut(oldValue.intValue()-newValue.intValue());
+                }
+            }
+        });
 
         for (int r = 0; r < gridSize[0]; r++) {
             for (int c = 0; c < gridSize[1]; c++) {
                 System.out.println("In loop");
                 Button button = new Button(String.valueOf("  "));
                 button.setId(Integer.toString(r)+":"+Integer.toString(c));
-                button.setStyle("-fx-background-color: #FFF;");
+                button.setStyle("-fx-background-color: #FFF; -fx-border-style: solid;");
                 System.out.println(button.getId());
                 button.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        int buttonID;
-                        if (button.getStyle()=="-fx-background-color: #FFF;") {
+                        int[] buttonID;
+                        String BID_Str;
+                        Button button_ = (Button) actionEvent.getSource();
+                        BID_Str= button_.getId();
+                        buttonID = returnButtonId(BID_Str);
+                        System.out.println(buttonID[0]+" "+buttonID[1]);
+                        Boolean Alive = GUI.isCellAlive(buttonID[0],buttonID[1]);
+                        if (Alive==false) {
                             //Button Selected
-                            Button b = (Button) actionEvent.getSource();
-                            System.out.println(b.getId() + " IS CLICKED");
-                            b.setStyle("-fx-background-color: #00FF00;");
-                            int [] IDs = returnButtonId(b.getId());
-                            GUI.makeCellALive(IDs[0],IDs[1]);
+                            System.out.println(BID_Str + " IS CLICKED IN");
+                            GUI.makeCellALive(buttonID[0],buttonID[1]);
+                            System.out.println("ALIVE: "+buttonID[0]+" "+buttonID[1]);
+                            updateCells();
                         }
-                        else if (button.getStyle()=="-fx-background-color: #00FF00;") {
+                        else {
                            //Button Deselected
-                            Button b = (Button) actionEvent.getSource();
-                            System.out.println(b.getId() + " IS CLICKED");
-                            b.setStyle("-fx-background-color: #FFF;");
-                            int [] IDs = returnButtonId(b.getId());
-                            GUI.makeCellDead(IDs[0],IDs[1]);
+                            System.out.println(BID_Str + " IS CLICKED");
+                            GUI.makeCellDead(buttonID[0],buttonID[1]);
+                            updateCells();
                         }
                     }
                 });
@@ -120,7 +146,7 @@ public class MainSceneController {
             }
         }
         this.scrollPane.setContent(Grid_);
-        updateCells();
+        //updateCells();
 
     }
     public void clearStage(ActionEvent e)
@@ -130,6 +156,8 @@ public class MainSceneController {
     }
     public void start(ActionEvent e)
     {
+        GUI.startGame();
+        GUI.clearGrid();
         welcomeText.setText("Game Started");
         loadBlankGrid();
 
@@ -138,5 +166,42 @@ public class MainSceneController {
     {
         GUI.nextState();
         this.updateCells();
+    }
+
+
+    public void zoomIn(int difference)
+    {
+        Grid_.setHgap(Grid_.getHgap()+(difference*0.5));
+        Grid_.setVgap(Grid_.getVgap()+(difference*0.5));
+        int gridSize[];
+        gridSize = GUI.getGridSize();
+
+        for (int r = 0; r < gridSize[0]; r++) {
+            for (int c = 0; c < gridSize[1]; c++) {
+                Button b = getButtonInGrid(r,c,Grid_);
+              //  System.out.println("ZOOM from Grid : "+b.getId());
+                b.setScaleY(b.getScaleY()+(difference*0.01));
+                b.setScaleX(b.getScaleX()+(difference*0.01));
+            }
+        }
+
+    }
+    public void zoomOut(int difference)
+    {
+
+        Grid_.setHgap(Grid_.getHgap()-(difference*0.5));
+        Grid_.setVgap(Grid_.getVgap()-(difference*0.5));
+        int gridSize[];
+        gridSize = GUI.getGridSize();
+
+        for (int r = 0; r < gridSize[0]; r++) {
+            for (int c = 0; c < gridSize[1]; c++) {
+                Button b = getButtonInGrid(r,c,Grid_);
+              //  System.out.println("ZOOM from Grid : "+b.getId());
+                b.setScaleY(b.getScaleY()-(difference*0.01));
+                b.setScaleX(b.getScaleX()-(difference*0.01));
+            }
+        }
+
     }
 }
