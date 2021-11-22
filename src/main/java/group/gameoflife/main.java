@@ -20,7 +20,7 @@ public class main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         int grid_xSize=50;
-        int grid_ySize=70;
+        int grid_ySize=50;
 
 
 
@@ -32,10 +32,12 @@ public class main extends Application {
         MainSceneController Controller = new MainSceneController();
         fxmlLoader.setController(Controller);
         Controller.loadGUI(GUI);
+
         Scene scene = new Scene(fxmlLoader.load(), 800, 800);
         stage.setTitle("Game Of Life");
         stage.setScene(scene);
         stage.show();
+        Controller.game_set();
 
     }
 

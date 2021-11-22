@@ -1,4 +1,5 @@
 package group.gameoflife.UI;
+import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -16,12 +17,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 
+import java.util.concurrent.TimeUnit;
+
 public class MainSceneController {
     private int Grid_Hgap;
     private int Grid_Vgap;
     private double Grid_Xscale;
     private double Grid_Yscale;
-    private int check;
+    private double speedFactor;
+   // private int check;
     private boolean game_status;
     private  GridPane Grid_;
     private Graphical_UI GUI;
@@ -33,6 +37,8 @@ public class MainSceneController {
     private Label welcomeText;
     @FXML
     private Slider zoomSlider;
+    @FXML
+    private Slider speedSlider;
     @FXML
     private Label noOfStage;
     @FXML
@@ -62,7 +68,7 @@ public class MainSceneController {
 
     public void loadGUI(Graphical_UI GUI)
     {
-        check =1;
+       // check =1;
         this.GUI=GUI;
         int[] gridSize= GUI.getGridSize();
         System.out.println("GridSize from GRID: "+ gridSize[0]);
@@ -76,7 +82,7 @@ public class MainSceneController {
         for (int r = 0; r < gridSize[0]; r++) {
             for (int c = 0; c < gridSize[1]; c++) {
                     Button b = getButtonInGrid(r,c,Grid_);
-                System.out.println("Tracked from Grid : "+b.getId());
+               /* System.out.println("Tracked from Grid : "+b.getId());*/
                 int [] IDs = this.returnButtonId(b.getId());
                 Boolean check = GUI.isCellAlive(IDs[0],IDs[1]);
                 if (check == true)
@@ -93,7 +99,7 @@ public class MainSceneController {
 
     public void loadBlankGrid()
     {
-        System.out.println(check);
+        //System.out.println(check);
         int[] gridSize;
         gridSize = this.GUI.getGridSize();
         Grid_ = new GridPane();
@@ -140,6 +146,7 @@ public class MainSceneController {
             }
         }
         this.scrollPane.setContent(Grid_);
+
         //updateCells();
 
     }
@@ -148,51 +155,94 @@ public class MainSceneController {
         GUI.clearGrid();
         updateCells();
     }
-    public void start(ActionEvent e)
+    public void game_set()
     {
         Grid_Hgap=5;
         Grid_Vgap=5;
-        if (game_status==false) {
+        this.scrollPane.setFitToHeight(true);
+        this.scrollPane.setFitToWidth(true);
+        GUI.startGame();
+        GUI.clearGrid();
+        loadBlankGrid();
+        welcomeText.setText("Game of Life");
 
-            GUI.startGame();
-            GUI.clearGrid();
-            loadBlankGrid();
-            welcomeText.setText("Game Started");
+        zoomSlider.setValue(47);
+        zoomSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
+        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-            zoomSlider.setValue(47);
-            zoomSlider.valueProperty().addListener(new ChangeListener<Number>() {
-
-                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-
-                    System.out.println("Old Value: " + oldValue.intValue() + "New Value: " + newValue.intValue()/* +"Multiple: " + multiple*/);
-                    if (oldValue.intValue() - newValue.intValue() < 0) {
-                        zoomIn(newValue.intValue() - oldValue.intValue());
-                    } else if (oldValue.intValue() - newValue.intValue() > 0) {
-                        zoomOut(oldValue.intValue() - newValue.intValue());
-                    }
-                }
-            });
-            this.game_status = true;
-
-
+            System.out.println("Old Value: " + oldValue.intValue() + "New Value: " + newValue.intValue()/* +"Multiple: " + multiple*/);
+            if (oldValue.intValue() - newValue.intValue() < 0) {
+                zoomIn(newValue.intValue() - oldValue.intValue());
+            } else if (oldValue.intValue() - newValue.intValue() > 0) {
+                zoomOut(oldValue.intValue() - newValue.intValue());
+            }
         }
-        else {
+        });
+        speedSlider.setValue(0.5);
+        speedSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+               // System.out.println("Old Value: " + oldValue.intValue() + "New Value: " + newValue.intValue()/* +"Multiple: " + multiple*/);
 
+                   speedUp(newValue.doubleValue());
+
+            }
+        });
+        this.game_status = true;
+
+    }
+    public void start(ActionEvent e)
+    {
             GUI.startGame();
-            GUI.clearGrid();
+          //  GUI.clearGrid();
             updateCells();
             welcomeText.setText("Game Started");
             this.game_status = true;
-
-
-        }
+            gameLoop();
     }
     public void stop(ActionEvent e)
     {
         GUI.stopGame();
         this.game_status=false;
     }
+
+    public void gameLoop()
+    {
+
+        final long[] startnanoTime = {System.nanoTime()};
+        AnimationTimer at = new AnimationTimer()
+        {
+            @Override
+            public void handle(long l) {/*
+                long t = (long) (l- startnanoTime[0] /1e9);*/
+
+                if (l - (long) startnanoTime[0] >= speedFactor*1e9) {
+                    /*startnanoTime[0] = t;*/
+                    startnanoTime[0] = l;
+                    GUI.nextState();
+                    updateCells();
+                }
+                if (game_status==false)
+                {
+                    stop();
+                }
+            }
+
+            @Override
+            public void start() {
+                super.start();
+            }
+
+            @Override
+            public void stop() {
+                super.stop();
+            }
+        };
+        at.start();
+
+    }
+
     public void nextStage(ActionEvent e)
     {
         GUI.nextState();
@@ -239,5 +289,15 @@ public class MainSceneController {
             }
         }
 
+    }
+    public void speedUp(double factor)
+    {
+        speedFactor=factor;
+        System.out.println(factor);
+    }
+    public void speedDown(int factor)
+    {
+        speedFactor=factor-speedFactor;
+        System.out.println(speedFactor+"/"+factor);
     }
 }

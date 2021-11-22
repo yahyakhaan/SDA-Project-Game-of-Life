@@ -11,7 +11,7 @@
       <Label fx:id="welcomeText" layoutX="276.0" layoutY="14.0" text="Game of Life" />
       <Label layoutX="66.0" layoutY="608.0" text="No of Stages:" />
       <Label fx:id="noOfStage" layoutX="142.0" layoutY="608.0" text="0" />
-      <Slider layoutX="385.0" layoutY="611.0" prefHeight="14.0" prefWidth="71.0" />
+      <Slider fx:id="speedSlider" blockIncrement="0.1" layoutX="385.0" layoutY="611.0" majorTickUnit="0.1" max="3.0" min="-2.0" minorTickCount="0" prefHeight="14.0" prefWidth="71.0" rotate="-180.0" value="0.5" />
       <Label layoutX="342.0" layoutY="609.0" text="Speed" />
       <Label layoutX="461.0" layoutY="610.0" text="Zoom" />
       <Slider fx:id="zoomSlider" layoutX="502.0" layoutY="611.0" majorTickUnit="10.0" max="90.0" min="2.0" minorTickCount="5" prefHeight="14.0" prefWidth="71.0" snapToTicks="true" value="47.0" />
