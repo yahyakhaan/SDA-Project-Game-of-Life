@@ -11,6 +11,16 @@ public class Graphical_UI implements UIinterface {
     {
             this.game=game;
     }
+
+    @Override
+    public void setSize(int[] size){
+    }
+
+    @Override
+    public void setGrid(cell[][] grid) {
+    }
+
+
     @Override
     public void makeCellALive(int x,int y){
         game.makeCellAlive(x,y);

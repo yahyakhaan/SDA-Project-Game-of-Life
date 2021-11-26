@@ -1,6 +1,9 @@
 package group.gameoflife.BL;
 
 public interface UIinterface{
+
+    public void setSize(int[] size);
+    public void setGrid(cell[][] grid);
     
     public void makeCellALive(int x,int y);
     public void makeCellDead(int x,int y);

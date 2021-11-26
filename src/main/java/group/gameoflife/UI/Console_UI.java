@@ -15,6 +15,17 @@ public class Console_UI implements UIinterface
     }
 
     @Override
+    public void setSize(int[] size){
+        m_console_grid.setSize(size);
+    }
+
+    @Override
+    public void setGrid(cell[][] grid)
+    {
+        m_console_grid.setCells(grid);
+    }
+
+    @Override
     public void makeCellALive(int x, int y) {
         m_console_grid.makeCellAlive(x,y);
     }

@@ -192,8 +192,7 @@ public class textDB {
         return 1;
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
 //        grid temp_grid=new grid(10,10);
 //        textDB textDB=new textDB(temp_grid);
 //        if(textDB.saveGame("testSave3")==-1)
@@ -209,7 +208,7 @@ public class textDB {
 //                System.out.println(names[i]);
 //        }
 
- //       textDB.deleteGame("testSave3.txt");
+        //       textDB.deleteGame("testSave3.txt");
 
 //        cell[][] temp_grid_1;
 //        int[] size=new int[2];
@@ -233,6 +232,5 @@ public class textDB {
 //            }
 //            System.out.println();
 //        }
-
     }
 }

@@ -247,6 +247,16 @@ public class grid {
         m_start=false;
     }
 
+    public void setSize(int[] size)
+    {
+        m_size=size;
+    }
+
+    public void setCells(cell[][] grid)
+    {
+        m_grid=grid;
+    }
+
     public void saveGame()
     {
 
