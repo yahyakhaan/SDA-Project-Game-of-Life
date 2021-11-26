@@ -72,7 +72,8 @@ public class ConsoleUIController {
         System.out.println("5-> Increase Speed");
         System.out.println("6-> Decrease Speed");
         System.out.println("7-> Save Game");
-
+        System.out.println("8-> Load Game");
+        System.out.println("9-> Delete Game");
         System.out.println("0-> Exit");
         System.out.print("Select an option: ");
         int option=0;
@@ -111,7 +112,77 @@ public class ConsoleUIController {
         String name;
         Scanner input_scanner = new Scanner(System.in);
         name = input_scanner.nextLine();
-        System.out.println(name);
+        if(text_db.saveGame(name)==-1)
+        {
+            System.out.println("A Game with this name already exists. Use a different name");
+        }
+        else {
+            System.out.println("Saved Successfully");
+        }
+    }
+
+    public void loadGame()
+    {
+        int size[]=new int[2];
+        cell loaded_grid[][];
+        String name;
+
+        name=this.listSavedGames();
+
+        if(name!=null)
+        {
+            loaded_grid = text_db.loadGame(name,size);
+            ui_controller.setSize(size);
+            ui_controller.setGrid(loaded_grid);
+        }
+        else{
+            System.out.println("There are no saved states");
+        }
+    }
+
+    public void deleteState()
+    {
+        String name;
+        name=this.listSavedGames();
+
+        if(name!=null)
+        {
+            text_db.deleteGame(name);
+        }
+        else{
+            System.out.println("There are no saved states");
+        }
+    }
+
+    public String listSavedGames()
+    {
+        String[] savedGames;
+        int[] noOfSavedGames=new int[1];
+
+        savedGames=text_db.savedGamesName(noOfSavedGames);
+
+        if(noOfSavedGames[0]==0)
+        {
+            return null;
+        }
+
+        for(int i=0;i<noOfSavedGames[0];i++)
+        {
+            System.out.println(i+1+"-> "+savedGames[i]);
+        }
+
+        System.out.print("Select a saved state: ");
+        int number;
+        Scanner input_scanner = new Scanner(System.in);
+        number = input_scanner.nextInt();
+
+        if(number>=1&&number<=noOfSavedGames[0])
+        {
+            return savedGames[number-1];
+        }
+        else {
+            return null;
+        }
     }
 
     public void stratGame() throws IOException {
@@ -123,9 +194,11 @@ public class ConsoleUIController {
                 while (true) {
                     for(int x=0;x<=ui_controller.getGridSize()[0];x++)
                     {
-                        System.out.println();
+                        for(int y=0;y<ui_controller.getGridSize()[1];y++)
+                        {
+                            System.out.println(System.lineSeparator().repeat(100));
+                        }
                     }
-                    System.out.flush();
                     ui_controller.nextState();
                     printGrid();
                     try {
@@ -143,11 +216,21 @@ public class ConsoleUIController {
         t.stop();
     }
 
+//    public void clear() {
+//
+//        for(int i = 0; i < Size; i++) {
+//            for(int j = 0; j < Size; j++) {
+//                Cells[i][j] = null;
+//                System.out.println(System.lineSeparator().repeat(100));
+//            }
+//        }
+//    }
+
     public void game() throws IOException {
         int option=1;
         this.setSpeed();
         do {
-            if(option>=1&&option<=3)
+            if(option>=1&&option<=8)
                 this.printGrid();
 
             option = this.menu();
@@ -178,6 +261,14 @@ public class ConsoleUIController {
             {
                 this.saveGame();
             }
+            else if(option==8)
+            {
+                this.loadGame();
+            }
+            else if(option==9)
+            {
+                this.deleteState();
+            }
         }while (option!=0);
     }
 
@@ -186,5 +277,4 @@ public class ConsoleUIController {
         ConsoleUIController consoleGame=new ConsoleUIController(consoleGrid);
         consoleGame.game();
     }
-
 }
