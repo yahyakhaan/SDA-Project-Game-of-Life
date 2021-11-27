@@ -14,10 +14,12 @@ public class Graphical_UI implements UIinterface {
 
     @Override
     public void setSize(int[] size){
+        game.setSize(size);
     }
 
     @Override
     public void setGrid(cell[][] grid) {
+        game.setCells(grid);
     }
 
 

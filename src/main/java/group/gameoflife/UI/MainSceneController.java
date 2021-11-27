@@ -1,4 +1,6 @@
 package group.gameoflife.UI;
+import group.gameoflife.DB.textDB;
+import group.gameoflife.main;
 import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -6,8 +8,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -16,7 +20,11 @@ import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
+import org.controlsfx.control.action.Action;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class MainSceneController {
@@ -26,8 +34,10 @@ public class MainSceneController {
     private double Grid_Yscale;
     private double speedFactor;
    // private int check;
+    private Stage stage;
     private boolean game_status;
     private  GridPane Grid_;
+    private textDB TextDatabase;
     private Graphical_UI GUI;
     @FXML
     private ScrollPane scrollPane;
@@ -65,7 +75,10 @@ public class MainSceneController {
 
         return (Button)result;
     }
-
+    public void loadTextDB(textDB DB)
+    {
+        this.TextDatabase=DB;
+    }
     public void loadGUI(Graphical_UI GUI)
     {
        // check =1;
@@ -155,8 +168,48 @@ public class MainSceneController {
         GUI.clearGrid();
         updateCells();
     }
+
+    public void setGamefromGUI(Graphical_UI GUI)
+    {
+        this.GUI=GUI;
+        int[] gridSize= GUI.getGridSize();
+        Grid_Hgap=5;
+        Grid_Vgap=5;
+        this.scrollPane.setFitToHeight(true);
+        this.scrollPane.setFitToWidth(true);
+        GUI.startGame();
+        loadBlankGrid();
+        updateCells();
+        welcomeText.setText("Game of Life");
+
+        zoomSlider.setValue(47);
+        zoomSlider.valueProperty().addListener(new ChangeListener<Number>() {
+
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+
+                System.out.println("Old Value: " + oldValue.intValue() + "New Value: " + newValue.intValue()/* +"Multiple: " + multiple*/);
+                if (oldValue.intValue() - newValue.intValue() < 0) {
+                    zoomIn(newValue.intValue() - oldValue.intValue());
+                } else if (oldValue.intValue() - newValue.intValue() > 0) {
+                    zoomOut(oldValue.intValue() - newValue.intValue());
+                }
+            }
+        });
+        speedSlider.setValue(0.5);
+        speedSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+                // System.out.println("Old Value: " + oldValue.intValue() + "New Value: " + newValue.intValue()/* +"Multiple: " + multiple*/);
+
+                speedUp(newValue.doubleValue());
+
+            }
+        });
+        this.game_status = true;
+    }
     public void game_set()
     {
+
         Grid_Hgap=5;
         Grid_Vgap=5;
         this.scrollPane.setFitToHeight(true);
@@ -295,9 +348,31 @@ public class MainSceneController {
         speedFactor=factor;
         System.out.println(factor);
     }
-    public void speedDown(int factor)
+    public void saveGame(ActionEvent e) throws IOException {
+        System.out.println("Save Game");
+        stage = (Stage)((Node)e.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Save_Scene.fxml"));
+        SaveSceneController Controller = new SaveSceneController();
+        fxmlLoader.setController(Controller);
+        Scene scene = new Scene(fxmlLoader.load(), 970, 730);
+        stage.setTitle("Game Of Life");
+        stage.setScene(scene);
+        stage.show();
+        Controller.loadGUI(GUI);
+        Controller.load_TextDB(TextDatabase);
+    }
+    public void loadGame (ActionEvent e) throws IOException
     {
-        speedFactor=factor-speedFactor;
-        System.out.println(speedFactor+"/"+factor);
+        System.out.println("Load Game");
+        stage = (Stage)((Node)e.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Load_Scene.fxml"));
+        LoadSceneController Controller = new LoadSceneController();
+        fxmlLoader.setController(Controller);
+        Scene scene = new Scene(fxmlLoader.load(), 970, 730);
+        stage.setTitle("Game Of Life");
+        stage.setScene(scene);
+        stage.show();
+        Controller.loadGUI(GUI);
+        Controller.setList(TextDatabase);
     }
 }
