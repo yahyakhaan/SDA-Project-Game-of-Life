@@ -2,6 +2,7 @@ package group.gameoflife;
 
 import java.util.concurrent.TimeUnit;
 import group.gameoflife.BL.grid;
+import group.gameoflife.DB.SQL_DB;
 import group.gameoflife.DB.textDB;
 import group.gameoflife.UI.Graphical_UI;
 import group.gameoflife.UI.MainSceneController;
@@ -25,6 +26,9 @@ public class main extends Application {
 
         grid game = new grid(grid_xSize,grid_ySize);
         textDB TextDatabase = new textDB(game);
+
+        SQL_DB sql =new SQL_DB(game);
+
         Graphical_UI GUI = new Graphical_UI(game);
         FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("MainScene.fxml"));
 
