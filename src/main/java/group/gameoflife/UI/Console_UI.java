@@ -87,18 +87,4 @@ public class Console_UI implements UIinterface
     public void stopGame(){
         m_console_grid.stopGame();
     }
-    @Override
-    public void saveGame(){
-        m_console_grid.saveGame();
-    }
-    @Override
-    public cell[][] loadGame(int id) {
-        return m_console_grid.loadGame(id);
-
-    }
-    @Override
-    public void deleteState(int id){
-
-        m_console_grid.deleteGame(id);
-    }
 }

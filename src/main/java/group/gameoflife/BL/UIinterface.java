@@ -22,8 +22,4 @@ public interface UIinterface{
 
     public void startGame();
     public void stopGame();
-
-    public void saveGame();
-    public cell[][] loadGame(int id);
-    public void deleteState(int id);
 }

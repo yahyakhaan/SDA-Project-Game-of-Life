@@ -209,6 +209,8 @@ public class grid {
                 m_grid[i][j].makeDead();
             }
         }
+
+        m_number_of_states=0;
     }
 
     public void setGridZoom(int zoom_level)
@@ -255,29 +257,6 @@ public class grid {
     public void setCells(cell[][] grid)
     {
         m_grid=grid;
-    }
-
-    public void saveGame()
-    {
-
-    }
-
-    public cell[][] loadGame(int id)
-    {
-        return null;
-    }
-
-    public void deleteGame(int id)
-    {
-
-    }
-
-    private void makeCellHalfAlive(int x,int y)
-    {
-        if(x<m_size[0] && y<m_size[1])
-        {
-            m_grid[x][y].makeHalfAlive();
-        }
     }
 
     private void makeGridFullyAlive()
