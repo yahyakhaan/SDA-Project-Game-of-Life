@@ -16,8 +16,18 @@ public class SQL_DB {
         SQL_DB_Controller=new SQL_DB_Controller(grid);
     }
 
-    public void saveState(String name)
+    public int saveState(String name)
     {
+        int status;
+
+        String[] checkIfAlreadyExists=viewStates();
+        for(int i=0;i<checkIfAlreadyExists.length;i++)
+        {
+            if(checkIfAlreadyExists[i]==name)
+            {
+                return -1;
+            }
+        }
         try
         {
             Connection connection= DriverManager.getConnection("jdbc:mysql://localhost:3306/GameOfLifeDB","root","123456");
@@ -48,10 +58,20 @@ public class SQL_DB {
         {
             e.printStackTrace();
         }
+        return 0;
     }
 
-    public void deleteState(String name)
+    public int deleteState(String name)
     {
+        int status=-1;
+        String[] checkIfAlreadyExists=viewStates();
+        for(int i=0;i<checkIfAlreadyExists.length;i++)
+        {
+            if(checkIfAlreadyExists[i]==name)
+            {
+                status=0;
+            }
+        }
         try
         {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/GameOfLifeDB", "root", "123456");
@@ -63,6 +83,7 @@ public class SQL_DB {
         {
             e.printStackTrace();
         }
+        return status;
     }
 
     public String[] viewStates()
@@ -88,7 +109,7 @@ public class SQL_DB {
         return savedStateList;
     }
 
-    public cell[][] loadState(String name)
+    public cell[][] loadState(String name,int size[])
     {
         cell[][] loaded_grid = new cell[0][];
         try
@@ -103,6 +124,9 @@ public class SQL_DB {
 
             MaxRowSize=resultSet.getInt("MaxRowSize");
             MaxColSize=resultSet.getInt("MaxColSize");
+
+            size[0]=MaxRowSize;
+            size[1]=MaxColSize;
 
             loaded_grid=new cell[MaxRowSize][MaxColSize];
 
