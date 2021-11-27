@@ -86,15 +86,15 @@ public class SQL_DB {
         return status;
     }
 
-    public String[] viewStates()
+    public String[] viewStates(int[] size)
     {
+        int counter=0;
         String[] savedStateList=new String[100];
         try
         {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/GameOfLifeDB", "root", "123456");
             Statement statement = connection.createStatement();
             ResultSet resultSet=statement.executeQuery("call viewState");
-            int counter=0;
             while(resultSet.next())
             {
                 savedStateList[counter]=resultSet.getString(1);
@@ -106,6 +106,7 @@ public class SQL_DB {
         {
             e.printStackTrace();
         }
+        size[0]=counter;
         return savedStateList;
     }
 
