@@ -19,8 +19,8 @@ public class SQL_DB {
     public int saveState(String name)
     {
         int status;
-
-        String[] checkIfAlreadyExists=viewStates();
+        int[] noofsavedStates = new int[1];
+        String[] checkIfAlreadyExists=viewStates(noofsavedStates);
         for(int i=0;i<checkIfAlreadyExists.length;i++)
         {
             if(checkIfAlreadyExists[i]==name)
@@ -64,7 +64,8 @@ public class SQL_DB {
     public int deleteState(String name)
     {
         int status=-1;
-        String[] checkIfAlreadyExists=viewStates();
+        int[] noofsavedStates = new int[1];
+        String[] checkIfAlreadyExists=viewStates(noofsavedStates);
         for(int i=0;i<checkIfAlreadyExists.length;i++)
         {
             if(checkIfAlreadyExists[i]==name)
