@@ -1,4 +1,5 @@
 package group.gameoflife.UI;
+import group.gameoflife.DB.SQL_DB;
 import group.gameoflife.DB.textDB;
 import group.gameoflife.main;
 import javafx.animation.AnimationTimer;
@@ -27,6 +28,7 @@ public class SaveSceneController {
     private  GridPane Grid_;
     private Graphical_UI GUI;
     private textDB TextDatabase;
+    private SQL_DB SQLDatabase;
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -69,9 +71,13 @@ public class SaveSceneController {
     {
         TextDatabase=DB;
     }
+    public void load_SQLDB(SQL_DB DB)
+    {
+        this.SQLDatabase=DB;
+    }
     public void save (ActionEvent e)
     {
-        String name;
+        /*String name;
         name = Stage_text.getText();
         System.out.println(name);
         if (name != null)
@@ -85,10 +91,37 @@ public class SaveSceneController {
 
                 Status.setText("Game Saved !!");
             }
+        }*/
+
+        String name;
+        name = Stage_text.getText();
+        System.out.println(name);
+        if (name != null)
+        {
+            int check = SQLDatabase.saveState(name);
+            if (check==-1)
+            {
+                Status.setText("Same Stage Name already exists !");
+            }
+            else{
+
+                Status.setText("Game Saved !!");
+            }
         }
     }
     public void back (ActionEvent e) throws IOException
     {
+        /*System.out.println("Go Back");
+        stage = (Stage)((Node)e.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("MainScene.fxml"));
+        MainSceneController Controller = new MainSceneController();
+        fxmlLoader.setController(Controller);
+        Scene scene = new Scene(fxmlLoader.load(), 970, 730);
+        stage.setTitle("Game Of Life");
+        stage.setScene(scene);
+        stage.show();
+        Controller.setGamefromGUI(GUI);
+        Controller.loadTextDB(TextDatabase);*/
 
         System.out.println("Go Back");
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
@@ -100,6 +133,6 @@ public class SaveSceneController {
         stage.setScene(scene);
         stage.show();
         Controller.setGamefromGUI(GUI);
-        Controller.loadTextDB(TextDatabase);
+        Controller.loadSQLDB(SQLDatabase);
     }
 }

@@ -26,9 +26,7 @@ public class main extends Application {
 
         grid game = new grid(grid_xSize,grid_ySize);
         textDB TextDatabase = new textDB(game);
-
         SQL_DB sql =new SQL_DB(game);
-
         Graphical_UI GUI = new Graphical_UI(game);
         FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("MainScene.fxml"));
 

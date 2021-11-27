@@ -1,6 +1,7 @@
 package group.gameoflife.UI;
 import group.gameoflife.BL.cell;
 import group.gameoflife.BL.grid;
+import group.gameoflife.DB.SQL_DB;
 import group.gameoflife.DB.textDB;
 import group.gameoflife.main;
 import javafx.animation.AnimationTimer;
@@ -29,6 +30,7 @@ public class LoadSceneController {
     private Stage stage;
     private Graphical_UI GUI;
     private textDB TextDatabase;
+    private SQL_DB SQLDatabase;
     private String StageName;
     @FXML
     private Pane pane;
@@ -78,13 +80,42 @@ public class LoadSceneController {
         });
         pane.getChildren().add(list_);
     }
+
+    public void setListSQL(SQL_DB DB)
+    {
+        SQLDatabase=DB;
+        String[] savedGames;
+        int[] noOfSavedGames=new int[1];
+        savedGames=SQLDatabase.viewStates(noOfSavedGames);
+        for(int i=0;i<noOfSavedGames[0];i++) {
+            System.out.println(savedGames[i]);
+        }
+        ListView<String> list_=new ListView<String>();
+        if (noOfSavedGames[0]!=0)
+        {
+            for(int i=0;i<noOfSavedGames[0];i++) {
+                list_.getItems().add(savedGames[i]);
+            }
+            // list_.getItems().addAll(savedGames);
+
+        }
+        list_.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<?extends String> observableValue, String o, String t1) {
+                StageName=list_.getSelectionModel().getSelectedItem();
+            }
+        });
+        pane.getChildren().add(list_);
+    }
+
     public void load(ActionEvent e) throws IOException
     {
         if (StageName!=null)
         {
             int size[]=new int[2];
             cell loaded_grid[][];
-            loaded_grid = TextDatabase.loadGame(StageName,size);
+            /*loaded_grid = TextDatabase.loadGame(StageName,size);*/
+            loaded_grid = SQLDatabase.loadState(StageName,size);
             GUI.clearGrid();
             GUI.setSize(size);
             GUI.setGrid(loaded_grid);
@@ -99,7 +130,8 @@ public class LoadSceneController {
             stage.setScene(scene);
             stage.show();
             Controller.setGamefromGUI(GUI);
-            Controller.loadTextDB(TextDatabase);
+            /*Controller.loadTextDB(TextDatabase);*/
+            Controller.loadSQLDB(SQLDatabase);
         }
     }
 
@@ -107,11 +139,13 @@ public class LoadSceneController {
     {
         if (StageName!=null)
         {
-            TextDatabase.deleteGame(StageName);
+            /*TextDatabase.deleteGame(StageName);*/
+            SQLDatabase.deleteState(StageName);
 
             String[] savedGames;
             int[] noOfSavedGames=new int[1];
-            savedGames=TextDatabase.savedGamesName(noOfSavedGames);
+            /*savedGames=TextDatabase.savedGamesName(noOfSavedGames);*/
+            savedGames=SQLDatabase.viewStates(noOfSavedGames);
             for(int i=0;i<noOfSavedGames[0];i++) {
                 System.out.println(savedGames[i]);
             }
@@ -121,7 +155,7 @@ public class LoadSceneController {
                 for(int i=0;i<noOfSavedGames[0];i++) {
                     list_.getItems().add(savedGames[i]);
                 }
-                // list_.getItems().addAll(savedGames);
+
 
             }
             list_.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {

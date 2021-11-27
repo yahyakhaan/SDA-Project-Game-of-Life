@@ -1,4 +1,5 @@
 package group.gameoflife.UI;
+import group.gameoflife.DB.SQL_DB;
 import group.gameoflife.DB.textDB;
 import group.gameoflife.main;
 import javafx.animation.AnimationTimer;
@@ -38,6 +39,7 @@ public class MainSceneController {
     private boolean game_status;
     private  GridPane Grid_;
     private textDB TextDatabase;
+    private SQL_DB SQLDatabase;
     private Graphical_UI GUI;
     @FXML
     private ScrollPane scrollPane;
@@ -78,6 +80,11 @@ public class MainSceneController {
     public void loadTextDB(textDB DB)
     {
         this.TextDatabase=DB;
+    }
+    public void loadSQLDB(SQL_DB SQLDB)
+    {
+        SQLDatabase=SQLDB;
+
     }
     public void loadGUI(Graphical_UI GUI)
     {
@@ -349,6 +356,18 @@ public class MainSceneController {
         System.out.println(factor);
     }
     public void saveGame(ActionEvent e) throws IOException {
+/*        System.out.println("Save Game");
+        stage = (Stage)((Node)e.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Save_Scene.fxml"));
+        SaveSceneController Controller = new SaveSceneController();
+        fxmlLoader.setController(Controller);
+        Scene scene = new Scene(fxmlLoader.load(), 970, 730);
+        stage.setTitle("Game Of Life");
+        stage.setScene(scene);
+        stage.show();
+        Controller.loadGUI(GUI);
+        Controller.load_TextDB(TextDatabase);*/
+
         System.out.println("Save Game");
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Save_Scene.fxml"));
@@ -363,6 +382,18 @@ public class MainSceneController {
     }
     public void loadGame (ActionEvent e) throws IOException
     {
+/*        System.out.println("Load Game");
+        stage = (Stage)((Node)e.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Load_Scene.fxml"));
+        LoadSceneController Controller = new LoadSceneController();
+        fxmlLoader.setController(Controller);
+        Scene scene = new Scene(fxmlLoader.load(), 970, 730);
+        stage.setTitle("Game Of Life");
+        stage.setScene(scene);
+        stage.show();
+        Controller.loadGUI(GUI);
+        Controller.setList(TextDatabase);*/
+
         System.out.println("Load Game");
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Load_Scene.fxml"));
