@@ -80,16 +80,16 @@ public class Graphical_UI implements UIinterface {
     public void stopGame(){
         game.stopGame();
     }
-    @Override
-    public void saveGame(){
-        game.saveGame();
-    }
-    @Override
-    public cell[][] loadGame(int id){
-        return game.loadGame(id);
-    }
-    @Override
-    public void deleteState(int id){
-        game.deleteGame(id);
-    }
+//    @Override
+//    public void saveGame(){
+//        game.saveGame();
+//    }
+//    @Override
+//    public cell[][] loadGame(int id){
+//        return game.loadGame(id);
+//    }
+//    @Override
+//    public void deleteState(int id){
+//        game.deleteGame(id);
+//    }
 }

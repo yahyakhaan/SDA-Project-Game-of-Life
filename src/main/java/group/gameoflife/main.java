@@ -34,7 +34,7 @@ public class main extends Application {
         fxmlLoader.setController(Controller);
         Controller.loadGUI(GUI);
         Controller.loadTextDB(TextDatabase);
-
+        Controller.loadSQLDB(sql);
         Scene scene = new Scene(fxmlLoader.load(), 970, 730);
         stage.setTitle("Game Of Life");
         stage.setScene(scene);

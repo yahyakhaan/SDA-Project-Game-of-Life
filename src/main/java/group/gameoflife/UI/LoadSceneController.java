@@ -53,6 +53,7 @@ public class LoadSceneController {
         stage.show();
         Controller.setGamefromGUI(GUI);
         Controller.loadTextDB(TextDatabase);
+        Controller.loadSQLDB(SQLDatabase);
     }
     public void setList(textDB DB)
     {

@@ -379,6 +379,7 @@ public class MainSceneController {
         stage.show();
         Controller.loadGUI(GUI);
         Controller.load_TextDB(TextDatabase);
+        Controller.load_SQLDB(SQLDatabase);
     }
     public void loadGame (ActionEvent e) throws IOException
     {
@@ -404,6 +405,7 @@ public class MainSceneController {
         stage.setScene(scene);
         stage.show();
         Controller.loadGUI(GUI);
-        Controller.setList(TextDatabase);
+        /*Controller.setList(TextDatabase);*/
+        Controller.setListSQL(SQLDatabase);
     }
 }

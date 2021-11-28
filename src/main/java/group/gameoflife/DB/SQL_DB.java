@@ -19,12 +19,13 @@ public class SQL_DB {
     public int saveState(String name)
     {
         int status;
-        int[] noofsavedStates = new int[1];
-        String[] checkIfAlreadyExists=viewStates(noofsavedStates);
-        for(int i=0;i<checkIfAlreadyExists.length;i++)
+        int[] noOfSavedStates = new int[1];
+        String[] checkIfAlreadyExists=viewStates(noOfSavedStates);
+        for(int i=0;i<noOfSavedStates[0];i++)
         {
-            if(checkIfAlreadyExists[i]==name)
+            if(checkIfAlreadyExists[i].equals(name))
             {
+                System.out.println("Game with this name already exists!");
                 return -1;
             }
         }
@@ -32,6 +33,7 @@ public class SQL_DB {
         {
             Connection connection= DriverManager.getConnection("jdbc:mysql://localhost:3306/GameOfLifeDB","root","123456");
             Statement statement=connection.createStatement();
+            System.out.println("saveState connected");
             String query="";
             int isAlive=0;
 
@@ -51,7 +53,7 @@ public class SQL_DB {
                     statement.executeQuery(query);
                 }
             }
-
+            System.out.println("Game Saved!");
             connection.close();
         }
         catch (Exception e)
@@ -64,8 +66,8 @@ public class SQL_DB {
     public int deleteState(String name)
     {
         int status=-1;
-        int[] noofsavedStates = new int[1];
-        String[] checkIfAlreadyExists=viewStates(noofsavedStates);
+        int[] noOfSavedStates = new int[1];
+        String[] checkIfAlreadyExists=viewStates(noOfSavedStates);
         for(int i=0;i<checkIfAlreadyExists.length;i++)
         {
             if(checkIfAlreadyExists[i]==name)
@@ -113,7 +115,7 @@ public class SQL_DB {
 
     public cell[][] loadState(String name,int size[])
     {
-        cell[][] loaded_grid = new cell[0][];
+        cell[][] loaded_grid=null;// = new cell[0][];
         try
         {
             int MaxRowSize,MaxColSize;
@@ -130,8 +132,9 @@ public class SQL_DB {
             size[0]=MaxRowSize;
             size[1]=MaxColSize;
 
-            loaded_grid=new cell[MaxRowSize][MaxColSize];
+            loaded_grid = new cell[size[0]][size[1]];
 
+            System.out.println("Grid Size:"+size[0]+":"+size[1]);
             for(int i= 0;i<MaxRowSize;i++)
             {
                 for(int j=0;j<MaxColSize;j++)
@@ -147,14 +150,14 @@ public class SQL_DB {
             {
                 for(int j=0;j<MaxColSize;j++)
                 {
-                    while(loadStateGrid.next())
-                    {
+                    loadStateGrid.next();
+
                         isAlive=loadStateGrid.getInt("isAlive");
                         if(isAlive==1)
                         {
                             loaded_grid[i][j].makeAlive();
                         }
-                    }
+
                 }
             }
             connection.close();
@@ -163,6 +166,7 @@ public class SQL_DB {
         {
             e.printStackTrace();
         }
+
         return loaded_grid;
     }
 }
