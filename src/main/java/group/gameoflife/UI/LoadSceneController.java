@@ -48,12 +48,13 @@ public class LoadSceneController {
         MainSceneController Controller = new MainSceneController();
         fxmlLoader.setController(Controller);
         Scene scene = new Scene(fxmlLoader.load(), 970, 730);
+        scene.getStylesheets().add(main.class.getResource("Stylesheet.css").toExternalForm());
         stage.setTitle("Game Of Life");
         stage.setScene(scene);
         stage.show();
         Controller.setGamefromGUI(GUI);
         Controller.loadTextDB(TextDatabase);
-        Controller.loadSQLDB(SQLDatabase);
+/*        Controller.loadSQLDB(SQLDatabase);*/
     }
     public void setList(textDB DB)
     {
@@ -65,12 +66,12 @@ public class LoadSceneController {
             System.out.println(savedGames[i]);
         }
         ListView<String> list_=new ListView<String>();
+
         if (noOfSavedGames[0]!=0)
         {
             for(int i=0;i<noOfSavedGames[0];i++) {
                 list_.getItems().add(savedGames[i]);
             }
-           // list_.getItems().addAll(savedGames);
 
         }
         list_.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -87,7 +88,8 @@ public class LoadSceneController {
         SQLDatabase=DB;
         String[] savedGames;
         int[] noOfSavedGames=new int[1];
-        savedGames=SQLDatabase.viewStates(noOfSavedGames);
+        savedGames=TextDatabase.savedGamesName(noOfSavedGames);
+/*        savedGames=SQLDatabase.viewStates(noOfSavedGames);*/
         for(int i=0;i<noOfSavedGames[0];i++) {
             System.out.println(savedGames[i]);
         }
@@ -97,7 +99,7 @@ public class LoadSceneController {
             for(int i=0;i<noOfSavedGames[0];i++) {
                 list_.getItems().add(savedGames[i]);
             }
-            // list_.getItems().addAll(savedGames);
+
 
         }
         list_.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -115,8 +117,8 @@ public class LoadSceneController {
         {
             int size[]=new int[2];
             cell loaded_grid[][];
-            /*loaded_grid = TextDatabase.loadGame(StageName,size);*/
-            loaded_grid = SQLDatabase.loadState(StageName,size);
+            loaded_grid = TextDatabase.loadGame(StageName,size);
+/*            loaded_grid = SQLDatabase.loadState(StageName,size);*/
             GUI.clearGrid();
             GUI.setSize(size);
             GUI.setGrid(loaded_grid);
@@ -127,12 +129,13 @@ public class LoadSceneController {
             MainSceneController Controller = new MainSceneController();
             fxmlLoader.setController(Controller);
             Scene scene = new Scene(fxmlLoader.load(), 970, 730);
+            scene.getStylesheets().add(main.class.getResource("Stylesheet.css").toExternalForm());
             stage.setTitle("Game Of Life");
             stage.setScene(scene);
             stage.show();
             Controller.setGamefromGUI(GUI);
-            /*Controller.loadTextDB(TextDatabase);*/
-            Controller.loadSQLDB(SQLDatabase);
+            Controller.loadTextDB(TextDatabase);
+/*            Controller.loadSQLDB(SQLDatabase);*/
         }
     }
 
@@ -140,13 +143,13 @@ public class LoadSceneController {
     {
         if (StageName!=null)
         {
-            /*TextDatabase.deleteGame(StageName);*/
-            SQLDatabase.deleteState(StageName);
+            TextDatabase.deleteGame(StageName);
+/*            SQLDatabase.deleteState(StageName);*/
 
             String[] savedGames;
             int[] noOfSavedGames=new int[1];
-            /*savedGames=TextDatabase.savedGamesName(noOfSavedGames);*/
-            savedGames=SQLDatabase.viewStates(noOfSavedGames);
+            savedGames=TextDatabase.savedGamesName(noOfSavedGames);
+/*            savedGames=SQLDatabase.viewStates(noOfSavedGames);*/
             for(int i=0;i<noOfSavedGames[0];i++) {
                 System.out.println(savedGames[i]);
             }

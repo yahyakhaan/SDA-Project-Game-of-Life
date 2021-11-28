@@ -17,16 +17,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
-import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
-import org.controlsfx.control.action.Action;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 public class MainSceneController {
     private int Grid_Hgap;
@@ -46,7 +41,7 @@ public class MainSceneController {
     @FXML
     private AnchorPane plane;
     @FXML
-    private Label welcomeText;
+    private Label titleLabel;
     @FXML
     private Slider zoomSlider;
     @FXML
@@ -107,9 +102,9 @@ public class MainSceneController {
                 Boolean check = GUI.isCellAlive(IDs[0],IDs[1]);
                 if (check == true)
                 {
-                    b.setStyle("-fx-background-color: #00FF00; -fx-border-style: solid;");
+                    b.setStyle("-fx-background-color: #FFFFFF; -fx-border-color:#55031F ; -fx-border-width:2; ");
                 }
-                else b.setStyle("-fx-background-color: #FFF; -fx-border-style: solid;");
+                else b.setStyle("-fx-background-color: #51515A; -fx-border-color:#55031F ; -fx-border-width:2;");
             }
         }
 
@@ -123,6 +118,7 @@ public class MainSceneController {
         int[] gridSize;
         gridSize = this.GUI.getGridSize();
         Grid_ = new GridPane();
+        Grid_.setStyle("-fx-background-color: #090510;");
         Grid_.setPadding(new Insets(5));
         Grid_.setHgap(5);
         Grid_.setVgap(5);
@@ -135,7 +131,7 @@ public class MainSceneController {
                 Grid_Xscale=button.getScaleX();
                 Grid_Yscale=button.getScaleY();
                 button.setId(Integer.toString(r)+":"+Integer.toString(c));
-                button.setStyle("-fx-background-color: #FFF; -fx-border-style: solid;");
+                button.setStyle("-fx-background-color: #51515A; -fx-border-color:#55031F ; -fx-border-width:2;");
                 System.out.println(button.getId());
                 button.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
@@ -187,9 +183,9 @@ public class MainSceneController {
         GUI.startGame();
         loadBlankGrid();
         updateCells();
-        welcomeText.setText("Game of Life");
+        titleLabel.setText("Game of Life");
 
-        zoomSlider.setValue(47);
+        zoomSlider.setValue(45);
         zoomSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -212,7 +208,7 @@ public class MainSceneController {
 
             }
         });
-        this.game_status = true;
+        this.game_status = false;
     }
     public void game_set()
     {
@@ -224,9 +220,9 @@ public class MainSceneController {
         GUI.startGame();
         GUI.clearGrid();
         loadBlankGrid();
-        welcomeText.setText("Game of Life");
+        titleLabel.setText("Game of Life");
 
-        zoomSlider.setValue(47);
+        zoomSlider.setValue(45);
         zoomSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
         public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -249,17 +245,19 @@ public class MainSceneController {
 
             }
         });
-        this.game_status = true;
+        this.game_status = false;
 
     }
     public void start(ActionEvent e)
     {
-            GUI.startGame();
-          //  GUI.clearGrid();
-            updateCells();
-            welcomeText.setText("Game Started");
-            this.game_status = true;
-            gameLoop();
+           if (game_status()==false) {
+               GUI.startGame();
+               //  GUI.clearGrid();
+               updateCells();
+               // titleLabel.setText("Game Started");
+               this.game_status = true;
+               gameLoop();
+           }
     }
     public void stop(ActionEvent e)
     {
@@ -305,8 +303,10 @@ public class MainSceneController {
 
     public void nextStage(ActionEvent e)
     {
-        GUI.nextState();
-        this.updateCells();
+        if(game_status()==false) {
+            GUI.nextState();
+            this.updateCells();
+        }
     }
 
 
@@ -356,56 +356,59 @@ public class MainSceneController {
         System.out.println(factor);
     }
     public void saveGame(ActionEvent e) throws IOException {
-/*        System.out.println("Save Game");
-        stage = (Stage)((Node)e.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Save_Scene.fxml"));
-        SaveSceneController Controller = new SaveSceneController();
-        fxmlLoader.setController(Controller);
-        Scene scene = new Scene(fxmlLoader.load(), 970, 730);
-        stage.setTitle("Game Of Life");
-        stage.setScene(scene);
-        stage.show();
-        Controller.loadGUI(GUI);
-        Controller.load_TextDB(TextDatabase);*/
-
         System.out.println("Save Game");
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Save_Scene.fxml"));
         SaveSceneController Controller = new SaveSceneController();
         fxmlLoader.setController(Controller);
         Scene scene = new Scene(fxmlLoader.load(), 970, 730);
+        scene.getStylesheets().add(main.class.getResource("Stylesheet.css").toExternalForm());
         stage.setTitle("Game Of Life");
         stage.setScene(scene);
         stage.show();
         Controller.loadGUI(GUI);
         Controller.load_TextDB(TextDatabase);
-        Controller.load_SQLDB(SQLDatabase);
-    }
-    public void loadGame (ActionEvent e) throws IOException
-    {
-/*        System.out.println("Load Game");
+
+/*        System.out.println("Save Game");
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Load_Scene.fxml"));
-        LoadSceneController Controller = new LoadSceneController();
+        FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Save_Scene.fxml"));
+        SaveSceneController Controller = new SaveSceneController();
         fxmlLoader.setController(Controller);
         Scene scene = new Scene(fxmlLoader.load(), 970, 730);
+        scene.getStylesheets().add(main.class.getResource("Stylesheet.css").toExternalForm());
         stage.setTitle("Game Of Life");
         stage.setScene(scene);
         stage.show();
         Controller.loadGUI(GUI);
-        Controller.setList(TextDatabase);*/
-
+        Controller.load_TextDB(TextDatabase);
+        Controller.load_SQLDB(SQLDatabase);*/
+    }
+    public void loadGame (ActionEvent e) throws IOException
+    {
         System.out.println("Load Game");
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Load_Scene.fxml"));
         LoadSceneController Controller = new LoadSceneController();
         fxmlLoader.setController(Controller);
         Scene scene = new Scene(fxmlLoader.load(), 970, 730);
+        scene.getStylesheets().add(main.class.getResource("Stylesheet.css").toExternalForm());
         stage.setTitle("Game Of Life");
         stage.setScene(scene);
         stage.show();
         Controller.loadGUI(GUI);
-        /*Controller.setList(TextDatabase);*/
-        Controller.setListSQL(SQLDatabase);
+        Controller.setList(TextDatabase);
+
+/*        System.out.println("Load Game");
+        stage = (Stage)((Node)e.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Load_Scene.fxml"));
+        LoadSceneController Controller = new LoadSceneController();
+        fxmlLoader.setController(Controller);
+        Scene scene = new Scene(fxmlLoader.load(), 970, 730);
+        scene.getStylesheets().add(main.class.getResource("Stylesheet.css").toExternalForm());
+        stage.setTitle("Game Of Life");
+        stage.setScene(scene);
+        stage.show();
+        Controller.loadGUI(GUI);
+        Controller.setListSQL(SQLDatabase);*/
     }
 }

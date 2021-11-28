@@ -1,0 +1,150 @@
+.root{
+-fx-background-color: linear-gradient(to bottom, #090510, #55031f);
+}
+#Start{
+-fx-border-width: 0;
+-fx-background-color: #310952;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+#Start:pressed:hover{
+-fx-border-width: 0;
+-fx-background-color: #5B0690;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+#Stop{
+-fx-border-width: 0;
+-fx-background-color: #310952;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+#Stop:pressed:hover{
+-fx-border-width: 0;
+-fx-background-color: #5B0690;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+#clearStage{
+-fx-border-width: 0;
+-fx-background-color: #310952;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+#clearStage:pressed:hover{
+-fx-border-width: 0;
+-fx-background-color: #5B0690;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+#saveGame{
+-fx-border-width: 0;
+-fx-background-color: #310952;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+#saveGame:pressed:hover{
+-fx-border-width: 0;
+-fx-background-color: #5B0690;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+#loadGame{
+-fx-border-width: 0;
+-fx-background-color: #310952;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+#loadGame:pressed:hover{
+-fx-border-width: 0;
+-fx-background-color: #5B0690;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+#nextStage{
+-fx-border-width: 0;
+-fx-background-color: #310952;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+#nextStage:pressed:hover{
+-fx-border-width: 0;
+-fx-background-color: #5B0690;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+.label{
+-fx-font-size: 20;
+-fx-alignment: center;
+-fx-text-fill: #C67EB6;
+}
+#noOfStage{
+-fx-font-size: 32;
+-fx-alignment: center;
+-fx-text-fill: #FFFFFF;
+}
+
+#titleLabel{
+-fx-font-size: 40;
+-fx-alignment: center;
+-fx-text-fill: #FFFFFF;
+
+}
+
+.slider .track{
+-fx-background-color: linear-gradient(to left, #B90933, #5B0690);
+-fx-background-radius: 0;
+}
+.slider .thumb{
+-fx-pref-height: 20;
+-fx-pref-width: 10;
+}
+
+#back{
+-fx-border-width: 0;
+-fx-background-color: #310952;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+#back:pressed:hover{
+-fx-border-width: 0;
+-fx-background-color: #5B0690;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+#delete{
+-fx-border-width: 0;
+-fx-background-color: #310952;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+#delete:pressed:hover{
+-fx-border-width: 0;
+-fx-background-color: #5B0690;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+#load{
+-fx-border-width: 0;
+-fx-background-color: #310952;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+#load:pressed:hover{
+-fx-border-width: 0;
+-fx-background-color: #5B0690;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+#save{
+-fx-border-width: 0;
+-fx-background-color: #310952;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+#save:pressed:hover{
+-fx-border-width: 0;
+-fx-background-color: #5B0690;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}

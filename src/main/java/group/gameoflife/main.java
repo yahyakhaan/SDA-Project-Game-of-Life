@@ -1,5 +1,6 @@
 package group.gameoflife;
-
+import javafx.stage.Screen;
+import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 import group.gameoflife.BL.grid;
 import group.gameoflife.DB.SQL_DB;
@@ -7,6 +8,8 @@ import group.gameoflife.DB.textDB;
 import group.gameoflife.UI.Graphical_UI;
 import group.gameoflife.UI.MainSceneController;
 import javafx.application.Application;
+import javafx.css.Style;
+import javafx.css.Stylesheet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -35,7 +38,9 @@ public class main extends Application {
         Controller.loadGUI(GUI);
         Controller.loadTextDB(TextDatabase);
         Controller.loadSQLDB(sql);
+
         Scene scene = new Scene(fxmlLoader.load(), 970, 730);
+        scene.getStylesheets().add(getClass().getResource("Stylesheet.css").toExternalForm());
         stage.setTitle("Game Of Life");
         stage.setScene(scene);
         stage.show();

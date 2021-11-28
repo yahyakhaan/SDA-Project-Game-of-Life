@@ -7,10 +7,10 @@
 
 <AnchorPane prefHeight="730.0" prefWidth="970.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="Header" layoutX="2.0" layoutY="63.0" prefHeight="18.0" prefWidth="969.0" text="Load Stage Menu" />
-      <Button fx:id="load" layoutX="400.0" layoutY="594.0" mnemonicParsing="false" onAction="#load" text="Load Game" />
-      <Button fx:id="back" layoutX="500.0" layoutY="594.0" mnemonicParsing="false" onAction="#back" prefHeight="26.0" prefWidth="72.0" text="Go Back" />
-      <Pane fx:id="pane" layoutX="311.0" layoutY="159.0" prefHeight="347.0" prefWidth="346.0" />
-      <Button fx:id="load1" layoutX="293.0" layoutY="593.0" mnemonicParsing="false" onAction="#delete" text="Delete Game" />
+      <Label fx:id="titleLabel" layoutX="2.0" layoutY="63.0" prefHeight="18.0" prefWidth="969.0" text="Load Stage Menu" />
+      <Button fx:id="load" layoutX="434.0" layoutY="593.0" mnemonicParsing="false" onAction="#load" prefWidth="100.0" text="Load" />
+      <Button fx:id="back" layoutX="589.0" layoutY="592.0" mnemonicParsing="false" onAction="#back" prefHeight="26.0" prefWidth="100.0" text="Go Back" />
+      <Pane fx:id="pane" layoutX="361.0" layoutY="160.0" prefHeight="347.0" prefWidth="346.0" />
+      <Button fx:id="delete" layoutX="279.0" layoutY="593.0" mnemonicParsing="false" onAction="#delete" prefHeight="26.0" prefWidth="100.0" text="Delete" />
    </children>
 </AnchorPane>
