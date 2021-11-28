@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import group.gameoflife.BL.cell;
 import group.gameoflife.BL.grid;
 import group.gameoflife.DB.textDB;
+import group.gameoflife.DB.SQL_DB;
 
 import java.util.Scanner;
 
@@ -15,11 +16,13 @@ public class ConsoleUIController {
 
     private Console_UI ui_controller;
     private textDB text_db;
+    private SQL_DB sql_db;
 
     public ConsoleUIController(grid console_grid)
     {
         ui_controller=new Console_UI(console_grid);
         text_db=new textDB(console_grid);
+        sql_db=new SQL_DB(console_grid);
     }
 
     public void printGrid()
@@ -112,7 +115,7 @@ public class ConsoleUIController {
         String name;
         Scanner input_scanner = new Scanner(System.in);
         name = input_scanner.nextLine();
-        if(text_db.saveGame(name)==-1)
+        if(/*text_db.saveGame(name)==-1*/ sql_db.saveState(name)==-1)
         {
             System.out.println("A Game with this name already exists. Use a different name");
         }
@@ -131,7 +134,8 @@ public class ConsoleUIController {
 
         if(name!=null)
         {
-            loaded_grid = text_db.loadGame(name,size);
+            //loaded_grid = text_db.loadGame(name,size);
+            loaded_grid=sql_db.loadState(name,size);
             ui_controller.setSize(size);
             ui_controller.setGrid(loaded_grid);
         }
@@ -147,7 +151,8 @@ public class ConsoleUIController {
 
         if(name!=null)
         {
-            text_db.deleteGame(name);
+            //text_db.deleteGame(name);
+            sql_db.deleteState(name);
         }
         else{
             System.out.println("There are no saved states");
@@ -159,7 +164,8 @@ public class ConsoleUIController {
         String[] savedGames;
         int[] noOfSavedGames=new int[1];
 
-        savedGames=text_db.savedGamesName(noOfSavedGames);
+        //savedGames=text_db.savedGamesName(noOfSavedGames);
+        savedGames=sql_db.viewStates(noOfSavedGames);
 
         if(noOfSavedGames[0]==0)
         {
