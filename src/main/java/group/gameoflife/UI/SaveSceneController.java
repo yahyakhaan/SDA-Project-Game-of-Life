@@ -36,9 +36,8 @@ public class SaveSceneController {
     @FXML
     private Label Status;
 
-    public void loadGUI(Graphical_UI GUI)
+    public void loadGUI(Graphical_UI GUI) //load GUI object for GO-BACK implentation
     {
-        // check =1;
         this.GUI=GUI;
         int[] gridSize= GUI.getGridSize();
         gridSize = this.GUI.getGridSize();
@@ -51,7 +50,7 @@ public class SaveSceneController {
         Grid_.setStyle("-fx-background-color: #090510;");
         for (int r = 0; r < gridSize[0]; r++) {
             for (int c = 0; c < gridSize[1]; c++) {
-                System.out.println("In loop");
+
                 Button button = new Button(String.valueOf("  "));
                 button.setId(Integer.toString(r)+":"+Integer.toString(c));
                 if (GUI.isCellAlive(r,c)) {
@@ -67,19 +66,21 @@ public class SaveSceneController {
 
 
     }
-    public void load_TextDB(textDB DB)
+    public void load_TextDB(textDB DB) //Load Text Database
     {
         TextDatabase=DB;
     }
-    public void load_SQLDB(SQL_DB DB)
+    public void load_SQLDB(SQL_DB DB) //Load SQL Database
     {
         this.SQLDatabase=DB;
     }
     public void save (ActionEvent e)
     {
+        //Text File Database
+        //...
         String name;
         name = Stage_text.getText();
-        System.out.println(name);
+
         if (name != null)
         {
             int check = TextDatabase.saveGame(name);
@@ -92,10 +93,15 @@ public class SaveSceneController {
                 Status.setText("Game Saved !!");
             }
         }
+        //...
+        //Ends Here
+
+        //SQL Database
+        //...
 
 /*        String name;
         name = Stage_text.getText();
-        System.out.println(name);
+
         if (name != null)
         {
             int check = SQLDatabase.saveState(name);
@@ -108,10 +114,15 @@ public class SaveSceneController {
                 Status.setText("Game Saved !!");
             }
         }*/
+
+
+        //...
+        //Ends Here
     }
     public void back (ActionEvent e) throws IOException
     {
-        System.out.println("Go Back");
+        //Text File Database
+        //...
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("MainScene.fxml"));
         MainSceneController Controller = new MainSceneController();
@@ -123,9 +134,12 @@ public class SaveSceneController {
         stage.show();
         Controller.setGamefromGUI(GUI);
         Controller.loadTextDB(TextDatabase);
+        //...
+        //Ends Here
 
-
-/*        System.out.println("Go Back");
+        //SQL Database
+        //...
+/*
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("MainScene.fxml"));
         MainSceneController Controller = new MainSceneController();
@@ -137,5 +151,8 @@ public class SaveSceneController {
         stage.show();
         Controller.setGamefromGUI(GUI);
         Controller.loadSQLDB(SQLDatabase);*/
+
+        //...
+        //Ends Here
     }
 }

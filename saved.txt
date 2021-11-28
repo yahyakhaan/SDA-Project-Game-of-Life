@@ -1,3 +1,2 @@
 InactiveBomb.txt
 Fireworks.txt
-game.txt

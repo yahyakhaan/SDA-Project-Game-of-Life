@@ -24,18 +24,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class MainSceneController {
-    private int Grid_Hgap;
-    private int Grid_Vgap;
-    private double Grid_Xscale;
-    private double Grid_Yscale;
+
     private double speedFactor;
-   // private int check;
     private Stage stage;
-    private boolean game_status;
-    private  GridPane Grid_;
-    private textDB TextDatabase;
-    private SQL_DB SQLDatabase;
-    private Graphical_UI GUI;
+    private boolean game_status; //game_start or game_stop
+    private  GridPane Grid_; //will contain all cells
+    private textDB TextDatabase; //File Database
+    private SQL_DB SQLDatabase; //SQL Database
+    private Graphical_UI GUI; //Implementation of GUI_Interface
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -50,7 +46,7 @@ public class MainSceneController {
     private Label noOfStage;
     @FXML
 
-    private int[] returnButtonId(String s)
+    private int[] returnButtonId(String s) //takes String as Cell's ID and return Col No and Row No
     {
         String[] ID = s.split(":");
         int[] ID_ = new int[2];
@@ -59,7 +55,8 @@ public class MainSceneController {
         return ID_;
     }
 
-    private Button getButtonInGrid ( int r,  int c, GridPane gridPane) {
+    private Button getButtonInGrid ( int r,  int c, GridPane gridPane) //returns the button(cell) at RowNo and ColNo on Grid
+    {
         Node result = null;
         ObservableList<Node> nodesInside = gridPane.getChildren();
 
@@ -75,21 +72,21 @@ public class MainSceneController {
     public void loadTextDB(textDB DB)
     {
         this.TextDatabase=DB;
-    }
-    public void loadSQLDB(SQL_DB SQLDB)
+    } //initialize File Database
+    public void loadSQLDB(SQL_DB SQLDB)//Initialize SQL Database
     {
         SQLDatabase=SQLDB;
 
     }
-    public void loadGUI(Graphical_UI GUI)
+    public void loadGUI(Graphical_UI GUI) //Initialize GUI_Object
     {
-       // check =1;
+
         this.GUI=GUI;
         int[] gridSize= GUI.getGridSize();
-        System.out.println("GridSize from GRID: "+ gridSize[0]);
+
     }
     @FXML
-    public void updateCells()
+    public void updateCells() //Updates the Cells on Screen (UI) from GUI.Grid
     {
         noOfStage.setText(String.valueOf(GUI.getNoOfStates()));
         int gridSize[];
@@ -97,7 +94,7 @@ public class MainSceneController {
         for (int r = 0; r < gridSize[0]; r++) {
             for (int c = 0; c < gridSize[1]; c++) {
                     Button b = getButtonInGrid(r,c,Grid_);
-               /* System.out.println("Tracked from Grid : "+b.getId());*/
+
                 int [] IDs = this.returnButtonId(b.getId());
                 Boolean check = GUI.isCellAlive(IDs[0],IDs[1]);
                 if (check == true)
@@ -111,10 +108,9 @@ public class MainSceneController {
     }
 
 
-
-    public void loadBlankGrid()
+    public void loadBlankGrid() // Creates a blank grid on screen
     {
-        //System.out.println(check);
+
         int[] gridSize;
         gridSize = this.GUI.getGridSize();
         Grid_ = new GridPane();
@@ -126,13 +122,12 @@ public class MainSceneController {
 
         for (int r = 0; r < gridSize[0]; r++) {
             for (int c = 0; c < gridSize[1]; c++) {
-                System.out.println("In loop");
+
                 Button button = new Button(String.valueOf("  "));
-                Grid_Xscale=button.getScaleX();
-                Grid_Yscale=button.getScaleY();
+
                 button.setId(Integer.toString(r)+":"+Integer.toString(c));
                 button.setStyle("-fx-background-color: #51515A; -fx-border-color:#55031F ; -fx-border-width:2;");
-                System.out.println(button.getId());
+
                 button.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
@@ -141,18 +136,18 @@ public class MainSceneController {
                         Button button_ = (Button) actionEvent.getSource();
                         BID_Str= button_.getId();
                         buttonID = returnButtonId(BID_Str);
-                        System.out.println(buttonID[0]+" "+buttonID[1]);
+
                         Boolean Alive = GUI.isCellAlive(buttonID[0],buttonID[1]);
                         if (Alive==false) {
                             //Button Selected
-                            System.out.println(BID_Str + " IS CLICKED IN");
+
                             GUI.makeCellALive(buttonID[0],buttonID[1]);
-                            System.out.println("ALIVE: "+buttonID[0]+" "+buttonID[1]);
+
                             updateCells();
                         }
                         else {
                            //Button Deselected
-                            System.out.println(BID_Str + " IS CLICKED");
+
                             GUI.makeCellDead(buttonID[0],buttonID[1]);
                             updateCells();
                         }
@@ -166,18 +161,17 @@ public class MainSceneController {
         //updateCells();
 
     }
-    public void clearStage(ActionEvent e)
+    public void clearStage(ActionEvent e) //Clear grid
     {
         GUI.clearGrid();
         updateCells();
     }
 
-    public void setGamefromGUI(Graphical_UI GUI)
+    public void setGamefromGUI(Graphical_UI GUI) //Load a game from GUI_Object
     {
         this.GUI=GUI;
         int[] gridSize= GUI.getGridSize();
-        Grid_Hgap=5;
-        Grid_Vgap=5;
+
         this.scrollPane.setFitToHeight(true);
         this.scrollPane.setFitToWidth(true);
         GUI.startGame();
@@ -190,7 +184,7 @@ public class MainSceneController {
 
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-                System.out.println("Old Value: " + oldValue.intValue() + "New Value: " + newValue.intValue()/* +"Multiple: " + multiple*/);
+                //System.out.println("Old Value: " + oldValue.intValue() + "New Value: " + newValue.intValue()/* +"Multiple: " + multiple*/);
                 if (oldValue.intValue() - newValue.intValue() < 0) {
                     zoomIn(newValue.intValue() - oldValue.intValue());
                 } else if (oldValue.intValue() - newValue.intValue() > 0) {
@@ -210,11 +204,10 @@ public class MainSceneController {
         });
         this.game_status = false;
     }
-    public void game_set()
+    public void game_set() //Create a new game (after reseting all parameters)
     {
 
-        Grid_Hgap=5;
-        Grid_Vgap=5;
+
         this.scrollPane.setFitToHeight(true);
         this.scrollPane.setFitToWidth(true);
         GUI.startGame();
@@ -227,7 +220,7 @@ public class MainSceneController {
 
         public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-            System.out.println("Old Value: " + oldValue.intValue() + "New Value: " + newValue.intValue()/* +"Multiple: " + multiple*/);
+            //System.out.println("Old Value: " + oldValue.intValue() + "New Value: " + newValue.intValue()/* +"Multiple: " + multiple*/);
             if (oldValue.intValue() - newValue.intValue() < 0) {
                 zoomIn(newValue.intValue() - oldValue.intValue());
             } else if (oldValue.intValue() - newValue.intValue() > 0) {
@@ -248,7 +241,7 @@ public class MainSceneController {
         this.game_status = false;
 
     }
-    public void start(ActionEvent e)
+    public void start(ActionEvent e) //start the game loop
     {
            if (game_status()==false) {
                GUI.startGame();
@@ -259,28 +252,28 @@ public class MainSceneController {
                gameLoop();
            }
     }
-    public void stop(ActionEvent e)
+    public void stop(ActionEvent e) //stops the game loop
     {
         GUI.stopGame();
         this.game_status=false;
     }
 
-    public void gameLoop()
+    public void gameLoop() //game loop
     {
 
-        final long[] startnanoTime = {System.nanoTime()};
-        AnimationTimer at = new AnimationTimer()
+        final long[] startnanoTime = {System.nanoTime()}; //previous time snap
+        AnimationTimer at = new AnimationTimer() //sets up a time difference for next cycle of gameLoop
         {
             @Override
-            public void handle(long l) {/*
-                long t = (long) (l- startnanoTime[0] /1e9);*/
-
+            public void handle(long l) {
+                //compare previous time snap with current
                 if (l - (long) startnanoTime[0] >= speedFactor*1e9) {
-                    /*startnanoTime[0] = t;*/
+                    //run if its time to update cells
                     startnanoTime[0] = l;
                     GUI.nextState();
                     updateCells();
                 }
+                //if game is stopped
                 if (game_status==false)
                 {
                     stop();
@@ -297,11 +290,11 @@ public class MainSceneController {
                 super.stop();
             }
         };
-        at.start();
+        at.start();//run start method in Animation timer
 
     }
 
-    public void nextStage(ActionEvent e)
+    public void nextStage(ActionEvent e) // go to next stage if game is not in loop
     {
         if(game_status()==false) {
             GUI.nextState();
@@ -312,34 +305,34 @@ public class MainSceneController {
 
     public void zoomIn(int difference)
     {
+        //scale up the gaps around the cells in grid
         Grid_.setHgap(Grid_.getHgap()+(difference*0.5));
         Grid_.setVgap(Grid_.getVgap()+(difference*0.5));
         int gridSize[];
         gridSize = GUI.getGridSize();
-
+        //scale up individual elements
         for (int r = 0; r < gridSize[0]; r++) {
             for (int c = 0; c < gridSize[1]; c++) {
                 Button b = getButtonInGrid(r,c,Grid_);
-              //  System.out.println("ZOOM from Grid : "+b.getId());
                 b.setScaleY(b.getScaleY()+(difference*0.01));
                 b.setScaleX(b.getScaleX()+(difference*0.01));
             }
         }
 
     }
-    public Boolean game_status()
+    public Boolean game_status() //return game status
     {
         return game_status;
 
     }
     public void zoomOut(int difference)
     {
-
+        //scale down the gaps around the cells in grid
         Grid_.setHgap(Grid_.getHgap()-(difference*0.5));
         Grid_.setVgap(Grid_.getVgap()-(difference*0.5));
         int gridSize[];
         gridSize = GUI.getGridSize();
-
+        //scale down individual cells
         for (int r = 0; r < gridSize[0]; r++) {
             for (int c = 0; c < gridSize[1]; c++) {
                 Button b = getButtonInGrid(r,c,Grid_);
@@ -350,13 +343,14 @@ public class MainSceneController {
         }
 
     }
-    public void speedUp(double factor)
+    public void speedUp(double factor) //change speed factor
     {
         speedFactor=factor;
-        System.out.println(factor);
     }
     public void saveGame(ActionEvent e) throws IOException {
-        System.out.println("Save Game");
+
+        //SAVE GAME IMPLEMENTATION FOR TEXT-FILE DATABASE
+        //....
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Save_Scene.fxml"));
         SaveSceneController Controller = new SaveSceneController();
@@ -368,8 +362,12 @@ public class MainSceneController {
         stage.show();
         Controller.loadGUI(GUI);
         Controller.load_TextDB(TextDatabase);
+        //....
+        //ENDS HERE
 
-/*        System.out.println("Save Game");
+        //SAVE GAME IMPLEMENTATION FOR SQL DATABASE
+        //...
+/*
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Save_Scene.fxml"));
         SaveSceneController Controller = new SaveSceneController();
@@ -382,10 +380,14 @@ public class MainSceneController {
         Controller.loadGUI(GUI);
         Controller.load_TextDB(TextDatabase);
         Controller.load_SQLDB(SQLDatabase);*/
+
+        //...
+        //ENDS HERE
     }
     public void loadGame (ActionEvent e) throws IOException
     {
-        System.out.println("Load Game");
+        //LOAD GAME IMPLEMENTATION FOR SQL DATABASE
+        //...
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Load_Scene.fxml"));
         LoadSceneController Controller = new LoadSceneController();
@@ -398,7 +400,12 @@ public class MainSceneController {
         Controller.loadGUI(GUI);
         Controller.setList(TextDatabase);
 
-/*        System.out.println("Load Game");
+        //...
+        //ENDS HERE
+
+        //LOAD GAME IMPLEMENTATION FOR SQL DATABASE
+        //...
+/*
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Load_Scene.fxml"));
         LoadSceneController Controller = new LoadSceneController();
@@ -410,5 +417,8 @@ public class MainSceneController {
         stage.show();
         Controller.loadGUI(GUI);
         Controller.setListSQL(SQLDatabase);*/
+
+        //...
+        //ENDS HERE
     }
 }
