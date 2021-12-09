@@ -43,7 +43,19 @@
 -fx-font-size:15;
 -fx-text-fill: #C67EB6;
 }
+#saveGame1{
+-fx-border-width: 0;
+-fx-background-color: #310952;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
 #saveGame:pressed:hover{
+-fx-border-width: 0;
+-fx-background-color: #5B0690;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+#saveGame1:pressed:hover{
 -fx-border-width: 0;
 -fx-background-color: #5B0690;
 -fx-font-size:15;
@@ -55,7 +67,19 @@
 -fx-font-size:15;
 -fx-text-fill: #C67EB6;
 }
+#loadGame1{
+-fx-border-width: 0;
+-fx-background-color: #310952;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
 #loadGame:pressed:hover{
+-fx-border-width: 0;
+-fx-background-color: #5B0690;
+-fx-font-size:15;
+-fx-text-fill: #C67EB6;
+}
+#loadGame1:pressed:hover{
 -fx-border-width: 0;
 -fx-background-color: #5B0690;
 -fx-font-size:15;

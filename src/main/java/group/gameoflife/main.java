@@ -24,23 +24,25 @@ import java.io.IOException;
 public class main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+        //initial Grid Size
         int grid_xSize=50;
         int grid_ySize=50;
 
-        grid game = new grid(grid_xSize,grid_ySize);
-        textDB TextDatabase = new textDB(game);
-        SQL_DB sql =new SQL_DB(game);
-        Graphical_UI GUI = new Graphical_UI(game);
-        FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("MainScene.fxml"));
+        grid game = new grid(grid_xSize,grid_ySize); //BL Obj
 
+        textDB TextDatabase = new textDB(game); //DB Obj
+        SQL_DB sql =new SQL_DB(game); //DB obj
+
+        Graphical_UI GUI = new Graphical_UI(game); //UI Obj
+        //GUI SETUP
+        FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("MainScene.fxml"));
         MainSceneController Controller = new MainSceneController();
         fxmlLoader.setController(Controller);
-        Controller.loadGUI(GUI);
-        Controller.loadTextDB(TextDatabase);
-        Controller.loadSQLDB(sql);
-
+        Controller.loadGUI(GUI); // Pass UI Obj
+        Controller.loadTextDB(TextDatabase); // Pass SQL-DB Obj
+        Controller.loadSQLDB(sql); //Pass SQL-DB Obj
         Scene scene = new Scene(fxmlLoader.load(), 970, 730);
-        scene.getStylesheets().add(getClass().getResource("Stylesheet.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("Stylesheet.css").toExternalForm()); //Pass CSS Styling
         stage.setTitle("Game Of Life");
         stage.setScene(scene);
         stage.show();

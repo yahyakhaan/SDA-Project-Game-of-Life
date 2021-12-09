@@ -86,7 +86,7 @@ public class MainSceneController {
 
     }
     @FXML
-    public void updateCells() //Updates the Cells on Screen (UI) from GUI.Grid
+    private void updateCells() //Updates the Cells on Screen (UI) from GUI.Grid
     {
         noOfStage.setText(String.valueOf(GUI.getNoOfStates()));
         int gridSize[];
@@ -108,7 +108,7 @@ public class MainSceneController {
     }
 
 
-    public void loadBlankGrid() // Creates a blank grid on screen
+    private void loadBlankGrid() // Creates a blank grid on screen
     {
 
         int[] gridSize;
@@ -192,7 +192,8 @@ public class MainSceneController {
                 }
             }
         });
-        speedSlider.setValue(0.5);
+        speedUp(1.5);
+        speedSlider.setValue(1.5);
         speedSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
@@ -228,7 +229,8 @@ public class MainSceneController {
             }
         }
         });
-        speedSlider.setValue(0.5);
+        speedUp(1.5);
+        speedSlider.setValue(1.5);
         speedSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
@@ -258,7 +260,7 @@ public class MainSceneController {
         this.game_status=false;
     }
 
-    public void gameLoop() //game loop
+    private void gameLoop() //game loop
     {
 
         final long[] startnanoTime = {System.nanoTime()}; //previous time snap
@@ -274,7 +276,7 @@ public class MainSceneController {
                     updateCells();
                 }
                 //if game is stopped
-                if (game_status==false)
+                if (game_status()==false)
                 {
                     stop();
                 }
@@ -303,7 +305,7 @@ public class MainSceneController {
     }
 
 
-    public void zoomIn(int difference)
+    private void zoomIn(int difference)
     {
         //scale up the gaps around the cells in grid
         Grid_.setHgap(Grid_.getHgap()+(difference*0.5));
@@ -320,12 +322,12 @@ public class MainSceneController {
         }
 
     }
-    public Boolean game_status() //return game status
+    private Boolean game_status() //return game status
     {
         return game_status;
 
     }
-    public void zoomOut(int difference)
+    private void zoomOut(int difference)
     {
         //scale down the gaps around the cells in grid
         Grid_.setHgap(Grid_.getHgap()-(difference*0.5));
@@ -343,34 +345,19 @@ public class MainSceneController {
         }
 
     }
-    public void speedUp(double factor) //change speed factor
+    private void speedUp(double factor) //change speed factor
     {
         speedFactor=factor;
     }
-    public void saveGame(ActionEvent e) throws IOException {
+    public void saveGameInSQLDB(ActionEvent e) throws IOException {
 
-        //SAVE GAME IMPLEMENTATION FOR TEXT-FILE DATABASE
-        //....
-        stage = (Stage)((Node)e.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Save_Scene.fxml"));
-        SaveSceneController Controller = new SaveSceneController();
-        fxmlLoader.setController(Controller);
-        Scene scene = new Scene(fxmlLoader.load(), 970, 730);
-        scene.getStylesheets().add(main.class.getResource("Stylesheet.css").toExternalForm());
-        stage.setTitle("Game Of Life");
-        stage.setScene(scene);
-        stage.show();
-        Controller.loadGUI(GUI);
-        Controller.load_TextDB(TextDatabase);
-        //....
-        //ENDS HERE
-
-        //SAVE GAME IMPLEMENTATION FOR SQL DATABASE
+       //SAVE GAME IMPLEMENTATION FOR SQL DATABASE
         //...
-/*
+        ActionEvent stopGame = new ActionEvent();
+        this.stop(stopGame);
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Save_Scene.fxml"));
-        SaveSceneController Controller = new SaveSceneController();
+        SQLDBSaveSceneController Controller = new SQLDBSaveSceneController();
         fxmlLoader.setController(Controller);
         Scene scene = new Scene(fxmlLoader.load(), 970, 730);
         scene.getStylesheets().add(main.class.getResource("Stylesheet.css").toExternalForm());
@@ -379,18 +366,67 @@ public class MainSceneController {
         stage.show();
         Controller.loadGUI(GUI);
         Controller.load_TextDB(TextDatabase);
-        Controller.load_SQLDB(SQLDatabase);*/
+        Controller.load_SQLDB(SQLDatabase);
 
         //...
         //ENDS HERE
     }
-    public void loadGame (ActionEvent e) throws IOException
+
+    public void saveGameInTextDB(ActionEvent e) throws IOException {
+
+        //SAVE GAME IMPLEMENTATION FOR TEXT-FILE DATABASE
+        //....
+        ActionEvent stopGame = new ActionEvent();
+        this.stop(stopGame);
+        stage = (Stage)((Node)e.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Save_Scene.fxml"));
+        TextDBSaveSceneController Controller = new TextDBSaveSceneController();
+        fxmlLoader.setController(Controller);
+        Scene scene = new Scene(fxmlLoader.load(), 970, 730);
+        scene.getStylesheets().add(main.class.getResource("Stylesheet.css").toExternalForm());
+        stage.setTitle("Game Of Life");
+        stage.setScene(scene);
+        stage.show();
+        Controller.loadGUI(GUI);
+        Controller.load_TextDB(TextDatabase);
+        Controller.load_SQLDB(SQLDatabase);
+        //....
+        //ENDS HERE
+
+
+    }
+    public void loadGameFromSQLDB (ActionEvent e) throws IOException
+    {
+         //LOAD GAME IMPLEMENTATION FOR SQL DATABASE
+        //...
+        ActionEvent stopGame = new ActionEvent();
+        this.stop(stopGame);
+        stage = (Stage)((Node)e.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Load_Scene.fxml"));
+        SQLDBLoadSceneController Controller = new SQLDBLoadSceneController();
+        fxmlLoader.setController(Controller);
+        Scene scene = new Scene(fxmlLoader.load(), 970, 730);
+        scene.getStylesheets().add(main.class.getResource("Stylesheet.css").toExternalForm());
+        stage.setTitle("Game Of Life");
+        stage.setScene(scene);
+        stage.show();
+        Controller.loadGUI(GUI);
+        Controller.load_TextDB(TextDatabase);
+        Controller.load_SQLDB(SQLDatabase);
+
+        //...
+        //ENDS HERE
+    }
+
+    public void loadGameFromTextDB (ActionEvent e) throws IOException
     {
         //LOAD GAME IMPLEMENTATION FOR SQL DATABASE
         //...
+        ActionEvent stopGame = new ActionEvent();
+        this.stop(stopGame);
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Load_Scene.fxml"));
-        LoadSceneController Controller = new LoadSceneController();
+        TextDBLoadSceneController Controller = new TextDBLoadSceneController();
         fxmlLoader.setController(Controller);
         Scene scene = new Scene(fxmlLoader.load(), 970, 730);
         scene.getStylesheets().add(main.class.getResource("Stylesheet.css").toExternalForm());
@@ -398,27 +434,11 @@ public class MainSceneController {
         stage.setScene(scene);
         stage.show();
         Controller.loadGUI(GUI);
-        Controller.setList(TextDatabase);
+        Controller.load_TextDB(TextDatabase);
+        Controller.load_SQLDB(SQLDatabase);
 
         //...
         //ENDS HERE
 
-        //LOAD GAME IMPLEMENTATION FOR SQL DATABASE
-        //...
-/*
-        stage = (Stage)((Node)e.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("Load_Scene.fxml"));
-        LoadSceneController Controller = new LoadSceneController();
-        fxmlLoader.setController(Controller);
-        Scene scene = new Scene(fxmlLoader.load(), 970, 730);
-        scene.getStylesheets().add(main.class.getResource("Stylesheet.css").toExternalForm());
-        stage.setTitle("Game Of Life");
-        stage.setScene(scene);
-        stage.show();
-        Controller.loadGUI(GUI);
-        Controller.setListSQL(SQLDatabase);*/
-
-        //...
-        //ENDS HERE
     }
 }
