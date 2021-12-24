@@ -1,4 +1,3 @@
 InactiveBomb.txt
 Fireworks.txt
-whu.txt
-star.txt
+hehe.txt

@@ -222,24 +222,24 @@ public class ConsoleUIController {
         t.stop();
     }
 
-//    public void clear() {
-//
-//        for(int i = 0; i < Size; i++) {
-//            for(int j = 0; j < Size; j++) {
-//                Cells[i][j] = null;
-//                System.out.println(System.lineSeparator().repeat(100));
-//            }
-//        }
-//    }
+    public void clear() {
+
+        for(int i = 0; i <=32; i++) {
+            System.out.println();
+        }
+    }
 
     public void game() throws IOException {
         int option=1;
         this.setSpeed();
         do {
             if(option>=1&&option<=8)
+            {
+                    this.clear();
                 this.printGrid();
+                option = this.menu();
+            }
 
-            option = this.menu();
             if(option==1)
             {
                 this.makeCellAlive();

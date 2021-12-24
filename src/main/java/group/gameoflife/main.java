@@ -7,6 +7,14 @@ import group.gameoflife.DB.SQL_DB;
 import group.gameoflife.DB.textDB;
 import group.gameoflife.UI.Graphical_UI;
 import group.gameoflife.UI.MainSceneController;
+
+//import group.gameoflife.SQL_GUI.Graphical_UI;
+//import group.gameoflife.SQL_GUI.MainSceneController;
+
+//import group.gameoflife.TEXTDB_GUI.Graphical_UI;
+//import group.gameoflife.TEXTDB_GUI.MainSceneController;
+
+
 import javafx.application.Application;
 import javafx.css.Style;
 import javafx.css.Stylesheet;
