@@ -14,5 +14,11 @@ module group.gameoflife {
     opens group.gameoflife to javafx.fxml;
     exports group.gameoflife;
     exports group.gameoflife.UI;
-    opens group.gameoflife.UI to javafx.fxml;
+
+    //comment those packages that are not required
+    //...
+    opens group.gameoflife.UI to javafx.fxml; //for combined project
+    //opens group.gameoflife.SQL_GUI to javafx.fxml; //for SQL Only
+    //opens group.gameoflife.TEXTDB_GUI to javafx.fxml; //for TextDB Only
+    //...
 }
