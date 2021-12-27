@@ -1,10 +1,9 @@
 package group.gameoflife.DB;
+import com.google.gson.Gson;
 import group.gameoflife.BL.grid;
 import group.gameoflife.BL.cell;
 
-import java.io.File;  // Import the File class
-import java.io.IOException;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.Scanner;
 
 public class textDB {
@@ -14,8 +13,34 @@ public class textDB {
     public textDB(grid grid) {
         textDBController = new textDBController(grid);
     }
+    public void giveSize() throws IOException {
+        Gson gson1 = new Gson();
+        FileReader Reader1=new FileReader("output.json");
+        String name = gson1.fromJson(Reader1, String.class);
+        Scanner input = null;
 
-    public int saveGame(String name) {
+        try {
+            input = new Scanner(new File(name));
+        } catch (Exception ex) {
+            System.out.println("Can not open file.");
+            System.exit(0);
+        }
+        int size[] = new int [2];
+        size[0] = input.nextInt();
+        size[1] = input.nextInt();
+        Writer writer =  new FileWriter("output.json");
+        Gson gson = new Gson();
+        gson.toJson(size,writer);
+        writer.flush();
+        writer.close();
+
+    }
+    public void saveGame() throws IOException {
+        Gson gson1 = new Gson();
+        FileReader Reader1=new FileReader("output.json");
+        String name = gson1.fromJson(Reader1, String.class);
+
+        int returnVal;
 
         try {
             File myObj = new File("saved.txt");
@@ -42,7 +67,13 @@ public class textDB {
 
                 }
             } else {
-                return -1;
+                returnVal=-1;
+                Writer writer =  new FileWriter("output.json");
+                Gson gson = new Gson();
+                gson.toJson(returnVal,writer);
+                writer.flush();
+                writer.close();
+                return;
             }
         } catch (IOException e) {
             System.out.println("An error occurred.");
@@ -71,10 +102,68 @@ public class textDB {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
-        return 0;
+        returnVal= 0;
+        Writer writer2 =  new FileWriter("output.json");
+        Gson gson = new Gson();
+        gson.toJson(returnVal,writer2);
+        writer2.flush();
+        writer2.close();
+
+    }
+    public void giveNo_ofSavedGames() throws IOException {
+        Scanner input = null;
+
+        String[] savedNames = new String[100];
+        int counter = 0;
+
+        try {
+            input = new Scanner(new File("saved.txt"));
+        } catch (Exception ex) {
+            System.out.println("Can not open file.");
+            System.exit(0);
+        }
+        while (input.hasNextLine()) {
+            String name = input.nextLine();
+            savedNames[counter] = name;
+            counter++;
+        }
+        input.close();
+        int size[] = new int[1];
+        size[0] = counter;
+        Writer writer =  new FileWriter("output.json");
+        Gson gson = new Gson();
+        gson.toJson(size,writer);
+        writer.flush();
+        writer.close();
+    }
+    public void savedGamesName() throws IOException {
+        Scanner input = null;
+
+        String[] savedNames = new String[100];
+        int counter = 0;
+
+        try {
+            input = new Scanner(new File("saved.txt"));
+        } catch (Exception ex) {
+            System.out.println("Can not open file.");
+            System.exit(0);
+        }
+        while (input.hasNextLine()) {
+            String name = input.nextLine();
+            savedNames[counter] = name;
+            counter++;
+        }
+        input.close();
+        Writer writer =  new FileWriter("output.json");
+        Gson gson = new Gson();
+        gson.toJson(savedNames,writer);
+        writer.flush();
+        writer.close();
+
+
     }
 
-    public String[] savedGamesName(int[] size) {
+    private String[] savedGamesNamePrivate(int[] size) {
         Scanner input = null;
 
         String[] savedNames = new String[100];
@@ -94,10 +183,19 @@ public class textDB {
         input.close();
 
         size[0] = counter;
+
         return savedNames;
+
     }
 
-    public cell[][] loadGame(String name, int[] size) {
+
+
+    public void loadGame() throws IOException {
+        Gson gson1 = new Gson();
+        FileReader Reader1=new FileReader("output.json");
+        String name = gson1.fromJson(Reader1, String.class);
+
+        int size[]= new int[2];
         Scanner input = null;
 
         try {
@@ -127,13 +225,22 @@ public class textDB {
                 }
             }
         }
+        Writer writer =  new FileWriter("output.json");
+        Gson gson = new Gson();
+        gson.toJson(loaded_grid,writer);
+        writer.flush();
+        writer.close();
 
-        return loaded_grid;
     }
 
-    public int deleteGame(String fileName) {
+    public void deleteGame() throws FileNotFoundException {
+
+        Gson gson1 = new Gson();
+        FileReader Reader1=new FileReader("output.json");
+        String fileName = gson1.fromJson(Reader1, String.class);
+
         int[] noofsavedStates = new int[1];
-        String savedStates[] = this.savedGamesName(noofsavedStates);
+        String savedStates[] = this.savedGamesNamePrivate(noofsavedStates);
 
         boolean flag = false;
         for (int i = 0; i < noofsavedStates[0]; i++) {
@@ -143,7 +250,7 @@ public class textDB {
         }
 
         if (flag == false) {
-            return -1;
+            return;
         }
 
         File myObj = new File(fileName);
@@ -163,6 +270,6 @@ public class textDB {
         } catch (IOException e) {
 
         }
-        return 1;
+        return;
     }
 }

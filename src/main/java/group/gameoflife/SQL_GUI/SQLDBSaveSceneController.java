@@ -1,5 +1,6 @@
 package group.gameoflife.SQL_GUI;
 
+import com.google.gson.Gson;
 import group.gameoflife.DB.SQL_DB;
 import group.gameoflife.DB.textDB;
 import group.gameoflife.main;
@@ -16,7 +17,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 
 public class SQLDBSaveSceneController {
     private Stage stage;
@@ -30,7 +34,7 @@ public class SQLDBSaveSceneController {
     @FXML
     private Label Status;
 
-    public void loadGUI(Graphical_UI GUI) //load GUI object for GO-BACK implentation
+    public void loadGUI(Graphical_UI GUI) throws IOException //load GUI object for GO-BACK implentation
     {
         this.GUI=GUI;
         int[] gridSize= GUI.getGridSize();
@@ -66,14 +70,20 @@ public class SQLDBSaveSceneController {
         this.SQLDatabase=DB;
     }
 
-    public void save (ActionEvent e)
-    {
+    public void save (ActionEvent e) throws IOException {
         String name;
         name = Stage_text.getText();
 
         if (name != null)
         {
-            int check = SQLDatabase.saveState(name);
+            Writer writer =  new FileWriter("output.json");
+            Gson gson = new Gson();
+            gson.toJson(name,writer);
+            writer.flush();
+            writer.close();
+            SQLDatabase.saveState();
+            FileReader Reader1=new FileReader("output.json");
+            int check = gson.fromJson(Reader1, int.class);
             if (check==-1)
             {
                 Status.setText("Same Stage Name already exists !");

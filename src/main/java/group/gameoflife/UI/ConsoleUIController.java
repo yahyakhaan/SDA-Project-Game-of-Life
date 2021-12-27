@@ -5,6 +5,7 @@ import java.lang.Thread;
 import java.io.*;
 import java.util.concurrent.TimeUnit;
 
+import com.google.gson.Gson;
 import group.gameoflife.BL.cell;
 import group.gameoflife.BL.grid;
 import group.gameoflife.DB.textDB;
@@ -25,8 +26,7 @@ public class ConsoleUIController {
         sql_db=new SQL_DB(console_grid);
     }
 
-    public void printGrid()
-    {
+    public void printGrid() throws IOException {
         for(int i=0;i<ui_controller.getGridSize()[0];i++)
         {
             for(int j=0;j<ui_controller.getGridSize()[1];j++)
@@ -44,8 +44,7 @@ public class ConsoleUIController {
         }
     }
 
-    public void makeCellAlive()
-    {
+    public void makeCellAlive() throws IOException {
         int x,y;
         Scanner input_scanner = new Scanner(System.in);
         System.out.print("Enter Row Number: ");
@@ -55,8 +54,7 @@ public class ConsoleUIController {
         ui_controller.makeCellALive(x,y);
     }
 
-    public void makeCellDead()
-    {
+    public void makeCellDead() throws IOException {
         int x,y;
         Scanner input_scanner = new Scanner(System.in);
         System.out.print("Enter Row Number: ");
@@ -85,37 +83,54 @@ public class ConsoleUIController {
         return option;
     }
 
-    public void setSpeed()
-    {
+    public void setSpeed() throws IOException {
         if(ui_controller.getGridSpeed()==0)
         {
             ui_controller.setGridSpeed(1);
         }
     }
 
-    public void increaseSpeed()
-    {
+    public void increaseSpeed() throws IOException {
         if(ui_controller.getGridSpeed()!=1)
         {
             ui_controller.setGridSpeed(ui_controller.getGridSpeed()-1);
         }
     }
 
-    public void decreaseSpeed()
-    {
+    public void decreaseSpeed() throws IOException {
         if(ui_controller.getGridSpeed()!=10)
         {
             ui_controller.setGridSpeed(ui_controller.getGridSpeed()+1);
         }
     }
 
-    public void saveGame()
-    {
+    public void saveGame() throws IOException {
         System.out.print("Enter Name: ");
         String name;
         Scanner input_scanner = new Scanner(System.in);
         name = input_scanner.nextLine();
-        if(/*text_db.saveGame(name)==-1*/ sql_db.saveState(name)==-1)
+
+        //For SQL DB
+        Writer writer =  new FileWriter("output.json");
+        Gson gson = new Gson();
+        gson.toJson(name,writer);
+        writer.flush();
+        writer.close();
+        sql_db.saveState();
+        FileReader Reader1=new FileReader("output.json");
+        int check = gson.fromJson(Reader1, int.class);
+
+        //For Text DB
+/*      Writer writer =  new FileWriter("output.json");
+        Gson gson = new Gson();
+        gson.toJson(name,writer);
+        writer.flush();
+        writer.close();
+        text_db.saveGame();
+        FileReader Reader1=new FileReader("output.json");
+        int check = gson.fromJson(Reader1, int.class);*/
+
+        if(check==-1)
         {
             System.out.println("A Game with this name already exists. Use a different name");
         }
@@ -124,8 +139,7 @@ public class ConsoleUIController {
         }
     }
 
-    public void loadGame()
-    {
+    public void loadGame() throws IOException {
         int size[]=new int[2];
         cell loaded_grid[][];
         String name;
@@ -134,8 +148,69 @@ public class ConsoleUIController {
 
         if(name!=null)
         {
+//For Text DB
+/*            Writer writer1 =  new FileWriter("output.json");
+
+            Gson gson3 = new Gson();
+            gson3.toJson(name,writer1);
+            writer1.flush();
+            writer1.close();
+
+            text_db.giveSize();
+            Gson gson1 = new Gson();
+            FileReader Reader1=new FileReader("output.json");
+            size = gson1.fromJson(Reader1, int[].class);
+
+            Writer writer =  new FileWriter("output.json");
+
+            Gson gson2 = new Gson();
+            gson2.toJson(name,writer);
+            writer.flush();
+            writer.close();
+
+            text_db.loadGame();
+            Gson gson = new Gson();
+            loaded_grid = new cell[size[0]][size[1]];
+            for (int i =0; i<size[0]; i++)
+                for (int j =0; j<size[1];j++)
+                {
+                    loaded_grid[i][j]=new cell();
+                }
+            FileReader Reader=new FileReader("output.json");
+            loaded_grid = gson.fromJson(Reader, cell[][].class);*/
+
             //loaded_grid = text_db.loadGame(name,size);
-            loaded_grid=sql_db.loadState(name,size);
+            //FOR SQL DB
+            Writer writer1 =  new FileWriter("output.json");
+            Gson gson3 = new Gson();
+            gson3.toJson(name,writer1);
+            writer1.flush();
+            writer1.close();
+            sql_db.giveSize();
+            Gson gson1 = new Gson();
+            FileReader Reader1=new FileReader("output.json");
+            size = gson1.fromJson(Reader1, int[].class);
+
+            Writer writer =  new FileWriter("output.json");
+
+            Gson gson2 = new Gson();
+            gson2.toJson(name,writer);
+            writer.flush();
+            writer.close();
+
+            sql_db.loadState();
+            Gson gson = new Gson();
+            loaded_grid = new cell[size[0]][size[1]];
+            for (int i =0; i<size[0]; i++)
+                for (int j =0; j<size[1];j++)
+                {
+                    loaded_grid[i][j]=new cell();
+                }
+            FileReader Reader=new FileReader("output.json");
+            loaded_grid = gson.fromJson(Reader, cell[][].class);
+
+
+
             ui_controller.setSize(size);
             ui_controller.setGrid(loaded_grid);
         }
@@ -144,28 +219,62 @@ public class ConsoleUIController {
         }
     }
 
-    public void deleteState()
-    {
+    public void deleteState() throws IOException {
+
         String name;
         name=this.listSavedGames();
 
         if(name!=null)
         {
-            //text_db.deleteGame(name);
-            sql_db.deleteState(name);
+            //FOR Text DB
+           /* Writer writer =  new FileWriter("output.json");
+            Gson gson = new Gson();
+            gson.toJson(name,writer);
+            writer.flush();
+            writer.close();
+            text_db.deleteGame();*/
+
+            //FOR SQL DB
+            Writer writer =  new FileWriter("output.json");
+            Gson gson = new Gson();
+            gson.toJson(name,writer);
+            writer.flush();
+            writer.close();
+            sql_db.deleteState();
+
+
         }
         else{
             System.out.println("There are no saved states");
         }
     }
 
-    public String listSavedGames()
-    {
+    public String listSavedGames() throws IOException {
         String[] savedGames;
         int[] noOfSavedGames=new int[1];
 
-        //savedGames=text_db.savedGamesName(noOfSavedGames);
-        savedGames=sql_db.viewStates(noOfSavedGames);
+        //For Text DB
+/*        text_db.giveNo_ofSavedGames();
+        Gson gson1 = new Gson();
+        FileReader Reader1=new FileReader("output.json");
+        noOfSavedGames = gson1.fromJson(Reader1, int[].class);
+        text_db.savedGamesName();
+        Gson gson2 = new Gson();
+        FileReader Reader2=new FileReader("output.json");
+        savedGames = gson1.fromJson(Reader2, String[].class);*/
+
+
+        //For SQL DB
+        sql_db.giveNo_ofSavedGames();
+        Gson gson1 = new Gson();
+        FileReader Reader1=new FileReader("output.json");
+        noOfSavedGames = gson1.fromJson(Reader1, int[].class);
+        sql_db.viewStates();
+        Gson gson2 = new Gson();
+        FileReader Reader2=new FileReader("output.json");
+        savedGames = gson1.fromJson(Reader2, String[].class);
+
+
 
         if(noOfSavedGames[0]==0)
         {
@@ -198,18 +307,28 @@ public class ConsoleUIController {
             @Override
             public void run() {
                 while (true) {
-                    for(int x=0;x<=ui_controller.getGridSize()[0];x++)
+                    int size[] = new int[2];
+                    try {
+                        size= ui_controller.getGridSize();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    for(int x=0;x<=size[0];x++)
                     {
-                        for(int y=0;y<ui_controller.getGridSize()[1];y++)
+                        for(int y=0;y<size[1];y++)
                         {
                             System.out.println(System.lineSeparator().repeat(100));
                         }
                     }
                     ui_controller.nextState();
-                    printGrid();
+                    try {
+                        printGrid();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     try {
                         TimeUnit.SECONDS.sleep(ui_controller.getGridSpeed());
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException | IOException e) {
                         e.printStackTrace();
                     }
 

@@ -1,5 +1,10 @@
 package group.gameoflife.BL;
 
+import com.google.gson.Gson;
+
+import java.io.*;
+import java.util.Scanner;
+
 public class grid {
 
     boolean m_start;
@@ -52,30 +57,53 @@ public class grid {
         m_start=false;
     }
 
-    public void makeCellAlive(int x,int y)
-    {
-        if(x<m_size[0] && y<m_size[1])
+    public void makeCellAlive() throws FileNotFoundException {
+        int coordinates[] = new int [2];
+        Gson gson1 = new Gson();
+        FileReader Reader1=new FileReader("output.json");
+        coordinates= gson1.fromJson(Reader1, int[].class);
+        Scanner input = null;
+        if(coordinates[0]<m_size[0] && coordinates[1]<m_size[1])
         {
-            m_grid[x][y].makeAlive();
+            m_grid[coordinates[0]][coordinates[1]].makeAlive();
         }
     }
 
-    public void makeCellDead(int x,int y)
-    {
-        if (x < m_size[0] && y < m_size[1]) {
-            m_grid[x][y].makeDead();
+    public void makeCellDead() throws FileNotFoundException {
+        int coordinates[] = new int [2];
+        Gson gson1 = new Gson();
+        FileReader Reader1=new FileReader("output.json");
+        coordinates= gson1.fromJson(Reader1, int[].class);
+        Scanner input = null;
+        if(coordinates[0]<m_size[0] && coordinates[1]<m_size[1])
+        {
+            m_grid[coordinates[0]][coordinates[1]].makeDead();
         }
     }
 
-    public boolean isCellAlive(int x,int y)
-    {
-        if(x<m_size[0] && y<m_size[1])
+    public void isCellAlive() throws IOException {
+        int coordinates[] = new int [2];
+        Gson gson1 = new Gson();
+        FileReader Reader1=new FileReader("output.json");
+        coordinates= gson1.fromJson(Reader1, int[].class);
+        boolean returnVal;
+        if(coordinates[0]<m_size[0] && coordinates[1]<m_size[1])
         {
-            return m_grid[x][y].isAlive();
+            returnVal= m_grid[coordinates[0]][coordinates[1]].isAlive();
+            Writer writer =  new FileWriter("output.json");
+            Gson gson = new Gson();
+            gson.toJson(returnVal,writer);
+            writer.flush();
+            writer.close();
         }
         else
         {
-            return false;
+            returnVal= false;
+            Writer writer =  new FileWriter("output.json");
+            Gson gson = new Gson();
+            gson.toJson(returnVal,writer);
+            writer.flush();
+            writer.close();
         }
     }
 
@@ -190,14 +218,20 @@ public class grid {
         m_number_of_states++;
     }
 
-    public int[] getGridSize()
-    {
-        return m_size;
+    public void getGridSize() throws IOException {
+        Writer writer =  new FileWriter("output.json");
+        Gson gson = new Gson();
+        gson.toJson(m_size,writer);
+        writer.flush();
+        writer.close();
     }
 
-    public cell[][] getGrid()
-    {
-        return  m_grid;
+    public void getGrid() throws IOException {
+        Writer writer =  new FileWriter("output.json");
+        Gson gson = new Gson();
+        gson.toJson(m_grid,writer);
+        writer.flush();
+        writer.close();
     }
 
     public void clearGrid()
@@ -213,30 +247,46 @@ public class grid {
         m_number_of_states=0;
     }
 
-    public void setGridZoom(int zoom_level)
-    {
-        m_zoom_level=zoom_level;
+    public void setGridZoom() throws FileNotFoundException {
+        int lvl;
+        Gson gson1 = new Gson();
+        FileReader Reader1=new FileReader("output.json");
+        lvl= gson1.fromJson(Reader1, int.class);
+        m_zoom_level=lvl;
     }
 
-    public void setGridSpeed(int speed_level)
-    {
-        m_speed_level=speed_level;
+    public void setGridSpeed() throws FileNotFoundException {
+        int lvl;
+        Gson gson1 = new Gson();
+        FileReader Reader1=new FileReader("output.json");
+        lvl= gson1.fromJson(Reader1, int.class);
+        m_speed_level=lvl;
     }
 
-    public int getGridZoom()
-    {
-        return m_zoom_level;
+    public void getGridZoom() throws IOException {
+        Writer writer =  new FileWriter("output.json");
+        Gson gson = new Gson();
+        gson.toJson(m_zoom_level,writer);
+        writer.flush();
+        writer.close();
     }
 
-    public int getGridSpeed()
-    {
-        return m_speed_level;
+    public void getGridSpeed() throws IOException {
+        Writer writer =  new FileWriter("output.json");
+        Gson gson = new Gson();
+        gson.toJson(m_speed_level,writer);
+        writer.flush();
+        writer.close();
     }
 
 
-    public int getNoOfStates()
-    {
-        return m_number_of_states;
+    public void getNoOfStates() throws IOException {
+        Writer writer =  new FileWriter("output.json");
+        Gson gson = new Gson();
+        gson.toJson(m_number_of_states,writer);
+        writer.flush();
+        writer.close();
+
     }
 
     public void startGame()
@@ -249,14 +299,20 @@ public class grid {
         m_start=false;
     }
 
-    public void setSize(int[] size)
-    {
+    public void setSize() throws FileNotFoundException {
+        int size[] = new int[2];
+        Gson gson1 = new Gson();
+        FileReader Reader1=new FileReader("output.json");
+        size= gson1.fromJson(Reader1, int[].class);
         m_size=size;
     }
 
-    public void setCells(cell[][] grid)
-    {
-        m_grid=grid;
+    public void setCells() throws FileNotFoundException {
+        cell[][] Cells;
+        Gson gson1 = new Gson();
+        FileReader Reader1=new FileReader("output.json");
+        Cells= gson1.fromJson(Reader1, cell[][].class);
+        m_grid=Cells;
     }
 
     private void makeGridFullyAlive()

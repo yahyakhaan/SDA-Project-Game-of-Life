@@ -73,7 +73,7 @@ public class MainSceneController {
         this.TextDatabase=DB;
     } //initialize File Database
 
-    public void loadGUI(Graphical_UI GUI) //Initialize GUI_Object
+    public void loadGUI(Graphical_UI GUI) throws IOException //Initialize GUI_Object
     {
 
         this.GUI=GUI;
@@ -81,7 +81,7 @@ public class MainSceneController {
 
     }
     @FXML
-    private void updateCells() //Updates the Cells on Screen (UI) from GUI.Grid
+    private void updateCells() throws IOException //Updates the Cells on Screen (UI) from GUI.Grid
     {
         noOfStage.setText(String.valueOf(GUI.getNoOfStates()));
         int gridSize[];
@@ -103,7 +103,7 @@ public class MainSceneController {
     }
 
 
-    private void loadBlankGrid() // Creates a blank grid on screen
+    private void loadBlankGrid() throws IOException // Creates a blank grid on screen
     {
 
         int[] gridSize;
@@ -132,19 +132,40 @@ public class MainSceneController {
                         BID_Str= button_.getId();
                         buttonID = returnButtonId(BID_Str);
 
-                        Boolean Alive = GUI.isCellAlive(buttonID[0],buttonID[1]);
+                        Boolean Alive = null;
+                        try {
+                            Alive = GUI.isCellAlive(buttonID[0],buttonID[1]);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         if (Alive==false) {
                             //Button Selected
 
-                            GUI.makeCellALive(buttonID[0],buttonID[1]);
+                            try {
+                                GUI.makeCellALive(buttonID[0],buttonID[1]);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
 
-                            updateCells();
+                            try {
+                                updateCells();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                         else {
                            //Button Deselected
 
-                            GUI.makeCellDead(buttonID[0],buttonID[1]);
-                            updateCells();
+                            try {
+                                GUI.makeCellDead(buttonID[0],buttonID[1]);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                updateCells();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 });
@@ -156,13 +177,13 @@ public class MainSceneController {
         //updateCells();
 
     }
-    public void clearStage(ActionEvent e) //Clear grid
+    public void clearStage(ActionEvent e) throws IOException //Clear grid
     {
         GUI.clearGrid();
         updateCells();
     }
 
-    public void setGamefromGUI(Graphical_UI GUI) //Load a game from GUI_Object
+    public void setGamefromGUI(Graphical_UI GUI) throws IOException //Load a game from GUI_Object
     {
         this.GUI=GUI;
         int[] gridSize= GUI.getGridSize();
@@ -181,9 +202,17 @@ public class MainSceneController {
 
                 //System.out.println("Old Value: " + oldValue.intValue() + "New Value: " + newValue.intValue()/* +"Multiple: " + multiple*/);
                 if (oldValue.intValue() - newValue.intValue() < 0) {
-                    zoomIn(newValue.intValue() - oldValue.intValue());
+                    try {
+                        zoomIn(newValue.intValue() - oldValue.intValue());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } else if (oldValue.intValue() - newValue.intValue() > 0) {
-                    zoomOut(oldValue.intValue() - newValue.intValue());
+                    try {
+                        zoomOut(oldValue.intValue() - newValue.intValue());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -200,7 +229,7 @@ public class MainSceneController {
         });
         this.game_status = false;
     }
-    public void game_set() //Create a new game (after reseting all parameters)
+    public void game_set() throws IOException //Create a new game (after reseting all parameters)
     {
 
 
@@ -218,9 +247,17 @@ public class MainSceneController {
 
             //System.out.println("Old Value: " + oldValue.intValue() + "New Value: " + newValue.intValue()/* +"Multiple: " + multiple*/);
             if (oldValue.intValue() - newValue.intValue() < 0) {
-                zoomIn(newValue.intValue() - oldValue.intValue());
+                try {
+                    zoomIn(newValue.intValue() - oldValue.intValue());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } else if (oldValue.intValue() - newValue.intValue() > 0) {
-                zoomOut(oldValue.intValue() - newValue.intValue());
+                try {
+                    zoomOut(oldValue.intValue() - newValue.intValue());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
         });
@@ -238,7 +275,7 @@ public class MainSceneController {
         this.game_status = false;
 
     }
-    public void start(ActionEvent e) //start the game loop
+    public void start(ActionEvent e) throws IOException //start the game loop
     {
            if (game_status()==false) {
                GUI.startGame();
@@ -268,7 +305,11 @@ public class MainSceneController {
                     //run if its time to update cells
                     startnanoTime[0] = l;
                     GUI.nextState();
-                    updateCells();
+                    try {
+                        updateCells();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 //if game is stopped
                 if (game_status()==false)
@@ -291,7 +332,7 @@ public class MainSceneController {
 
     }
 
-    public void nextStage(ActionEvent e) // go to next stage if game is not in loop
+    public void nextStage(ActionEvent e) throws IOException // go to next stage if game is not in loop
     {
         if(game_status()==false) {
             GUI.nextState();
@@ -300,8 +341,7 @@ public class MainSceneController {
     }
 
 
-    private void zoomIn(int difference)
-    {
+    private void zoomIn(int difference) throws IOException {
         //scale up the gaps around the cells in grid
         Grid_.setHgap(Grid_.getHgap()+(difference*0.5));
         Grid_.setVgap(Grid_.getVgap()+(difference*0.5));
@@ -322,8 +362,7 @@ public class MainSceneController {
         return game_status;
 
     }
-    private void zoomOut(int difference)
-    {
+    private void zoomOut(int difference) throws IOException {
         //scale down the gaps around the cells in grid
         Grid_.setHgap(Grid_.getHgap()-(difference*0.5));
         Grid_.setVgap(Grid_.getVgap()-(difference*0.5));

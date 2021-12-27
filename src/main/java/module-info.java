@@ -10,10 +10,14 @@ module group.gameoflife {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires java.sql;
+    requires com.google.gson;
 
     opens group.gameoflife to javafx.fxml;
     exports group.gameoflife;
     exports group.gameoflife.UI;
+
+    opens group.gameoflife.BL to com.google.gson;
+
 
     //comment those packages that are not required
     //...

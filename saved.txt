@@ -1,3 +1,5 @@
 InactiveBomb.txt
 Fireworks.txt
 hehe.txt
+empty.txt
+empty2.txt
